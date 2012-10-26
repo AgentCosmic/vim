@@ -320,15 +320,6 @@ function! ToggleMiniBufExplCheckDupeBufs()
 	endif
 endfunction
 
-" Pymode
-let g:pymode_doc = 0
-let g:pymode_rope = 0
-let g:pymode_breakpoint = 0
-let g:pymode_virtualenv = 0
-let g:pymode_lint_cwindow = 0
-let g:pymode_run_key = '<leader><F6>'
-let g:pymode_lint_checker = 'pyflakes,pep8'
-
 
 " ----- ----- ----- -----
 " Others
