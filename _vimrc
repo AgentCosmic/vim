@@ -74,8 +74,8 @@ augroup vimrcBehavior
 	" Delete empty buffers, specially for files opened with --remote option
 	autocmd BufAdd * :call <SID>DeleteBufferIfEmpty()
 
-	" Don't list preview window
-	autocmd BufEnter * :call <SID>UnlistPreviewWindow()
+	" Don't list preview and quickfix window
+	autocmd BufEnter * :call <SID>DelistWindow()
 augroup END
 
 function! s:DeleteBufferIfEmpty()
@@ -87,10 +87,12 @@ function! s:DeleteBufferIfEmpty()
 	endif
 endfunction
 
-function! s:UnlistPreviewWindow() 
+function! s:DelistWindow() 
     if &previewwindow 
         set nobuflisted 
-    endif 
+	elseif &filetype == 'qf'
+		set nobuflisted
+	endif
 endf 
 
 
@@ -233,7 +235,7 @@ nnoremap <leader>o :update<cr>:source %<cr>
 " Substitute
 nnoremap <F2> yiw:%s/\<<c-r>0\>/
 " Grep
-nnoremap <F3> yiw:grep <c-r>0
+nnoremap <F3> yiw:grep <c-r>0 
 " Delete buffer
 nnoremap <F4> :bdelete<cr>
 nnoremap <c-F4> :BufOnly<cr>
@@ -248,6 +250,9 @@ ca TT TagbarToggle
 
 " Gundo
 ca GT GundoToggle
+
+" Syntastic
+let g:syntastic_python_checker_args = '--ignore=E501'
 
 " delimitmate
 let delimitMate_matchpairs = "(:),[:],{:}"
