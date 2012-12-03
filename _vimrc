@@ -252,6 +252,7 @@ ca TT TagbarToggle
 ca GT GundoToggle
 
 " Syntastic
+let g:syntastic_javascript_gjslint_conf = '--nostrict'
 let g:syntastic_python_checker_args = '--ignore=E501'
 
 " delimitmate
@@ -288,6 +289,7 @@ inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<s-tab>'
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_enable_camel_case_completion = 1
+let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_caching_limit_file_size = 50000
 " higher value = higher priority
 " swap priority of syntax and buffer complete
