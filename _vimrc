@@ -19,7 +19,7 @@ endif
 
 " Start Pathogen First!
 source $VIM/bundle/vim-pathogen/autoload/pathogen.vim
-call pathogen#infect('$VIM/bundle')
+execute pathogen#infect(expand('$VIM/bundle'))
 
 
 " ----- ----- ----- -----
@@ -194,6 +194,9 @@ set nofoldenable " disable by default
 
 " Don't use Ex mode, use Q for formatting
 map Q gq
+
+" Alternate file switching
+nnoremap <bs> <c-^>
 
 " Use 0 to move to first non-whitespace since I already have home button
 nnoremap 0 ^
