@@ -238,7 +238,7 @@ nnoremap <leader>o :update<cr>:source %<cr>
 " Substitute
 nnoremap <F2> yiw:%s/\<<c-r>0\>/
 " Grep
-nnoremap <F3> yiw:grep <c-r>0 
+nnoremap <F3> *Nyiw:grep <c-r>0 
 " Delete buffer
 nnoremap <F4> :bdelete<cr>
 nnoremap <c-F4> :BufOnly<cr>
@@ -247,9 +247,6 @@ nnoremap <c-F4> :BufOnly<cr>
 " ----- ----- ----- -----
 " Plugins
 " ----- ----- ----- -----
-
-" Tagbar
-ca TT TagbarToggle
 
 " Gundo
 ca GT GundoToggle
@@ -285,6 +282,20 @@ let g:localvimrc_name = '_lvimrc'
 let g:localvimrc_count = 1
 let g:localvimrc_sandbox = 0
 let g:localvimrc_ask = 0
+
+" Tagbar
+ca TT TagbarToggle
+let g:tagbar_sort = 0
+let g:tagbar_type_php  = {
+		\ 'ctagstype': 'php',
+		\ 'kinds': [
+			\ 'i:interfaces',
+			\ 'c:classes',
+			\ 'd:constant definitions',
+			\ 'f:functions',
+			\ 'j:javascript functions:1'
+		\ ]
+	\ }
 
 " neocomplcache
 inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
