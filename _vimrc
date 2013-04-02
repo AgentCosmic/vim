@@ -19,7 +19,7 @@ endif
 
 " Start Pathogen First!
 source $VIM/bundle/vim-pathogen/autoload/pathogen.vim
-execute pathogen#infect(expand('$VIM/bundle'))
+execute pathogen#infect(expand('$VIM/bundle/{}'))
 
 
 " ----- ----- ----- -----
