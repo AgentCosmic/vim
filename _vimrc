@@ -192,6 +192,9 @@ set nofoldenable " disable by default
 " Remapping
 " ----- ----- ----- -----
 
+" Delete without jumping http://vim.1045645.n5.nabble.com/How-to-delete-range-of-lines-without-moving-cursor-td5713219.html
+com! -range D <line1>,<line2>d | norm <C-o> 
+
 " Don't use Ex mode, use Q for formatting
 map Q gq
 
@@ -231,6 +234,7 @@ map <leader>p p<leader>v
 
 " Shortcuts
 nnoremap <leader>s :update<cr>
+nnoremap <leader>a :wa<cr>
 nnoremap <leader>h :nohlsearch<cr>
 nnoremap <leader>q :q<cr>
 vnoremap <leader>p "_dP
@@ -316,6 +320,8 @@ let g:neocomplcache_source_rank = {
 " MiniBufferExpl
 nnoremap <tab> :bn!<cr>
 nnoremap <s-tab> :bp!<cr>
+vnoremap <tab> :bn!<cr>
+vnoremap <s-tab> :bp!<cr>
 inoremap <c-tab> <esc>:bn!<cr>
 vnoremap <c-tab> <esc>:bn!<cr>
 nnoremap <c-tab> :bn!<cr>
