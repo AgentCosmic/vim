@@ -252,8 +252,8 @@ nnoremap <c-F4> :BufOnly<cr>
 " Plugins
 " ----- ----- ----- -----
 
-" Gundo
-ca GT GundoToggle
+" undotree
+ca UT UndotreeToggle
 
 " Syntastic
 let g:syntastic_javascript_gjslint_conf = '--nostrict'
