@@ -151,7 +151,7 @@ set scrolloff=1
 
 " Status line
 set laststatus=2 " always show statusline
-set statusline=\ %F
+set statusline=\ %{getcwd()}\ -\ %f " working directory followed by file path
 set statusline+=\ %r " readonly flag
 set statusline+=\ %m " modified flag
 set statusline+=%= " right align from here
@@ -193,7 +193,7 @@ set nofoldenable " disable by default
 " ----- ----- ----- -----
 
 " Delete without jumping http://vim.1045645.n5.nabble.com/How-to-delete-range-of-lines-without-moving-cursor-td5713219.html
-com! -range D <line1>,<line2>d | norm <C-o> 
+command! -range D <line1>,<line2>d | norm <c-o> 
 
 " Don't use Ex mode, use Q for formatting
 map Q gq
@@ -242,7 +242,7 @@ nnoremap <leader>o :update<cr>:source %<cr>
 " Substitute
 nnoremap <F2> yiw:%s/\<<c-r>0\>/
 " Grep
-nnoremap <F3> *Nyiw:grep <c-r>0 
+nnoremap <F3> g*Nyiw:cw<cr>:grep <c-r>0 
 " Delete buffer
 nnoremap <F4> :bdelete<cr>
 nnoremap <c-F4> :BufOnly<cr>
@@ -263,10 +263,6 @@ let g:syntastic_python_checker_args = '--ignore=E501'
 let delimitMate_matchpairs = "(:),[:],{:}"
 let delimitMate_expand_cr = 1
 
-" ctrlp
-let g:ctrlp_open_multiple_files = 'i'
-let g:ctrlp_by_filename = 1
-
 " EasyMotion
 let g:EasyMotion_leader_key = '<Leader>'
 let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz'
@@ -286,6 +282,12 @@ let g:localvimrc_name = '_lvimrc'
 let g:localvimrc_count = 1
 let g:localvimrc_sandbox = 0
 let g:localvimrc_ask = 0
+
+" ctrlp
+let g:ctrlp_open_multiple_files = 'i'
+let g:ctrlp_by_filename = 1
+nnoremap <c-t> :CtrlPBufTag<cr>
+nnoremap <c-s-t> :CtrlPBufTagAll<cr>
 
 " Tagbar
 ca TT TagbarToggle
