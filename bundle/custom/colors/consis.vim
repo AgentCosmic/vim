@@ -93,7 +93,9 @@ hi Comment         guifg=#889392
 hi CursorLine                    guibg=#303032
 hi CursorColumn                  guibg=#303032
 hi LineNr          guifg=#6f7978
+hi CursorLineNr    guifg=#6f7978
 hi NonText         guifg=#6f7978 guibg=#242526
+hi ColorColumn                   guibg=#1b1c1d
 
 
 hi phpFunctions  guifg=#e8b5ff

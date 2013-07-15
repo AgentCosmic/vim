@@ -72,7 +72,9 @@ augroup vimrcBehavior
 	autocmd BufWritePre *.css,*.htm,*.html,*.js,*.php,*.py :%s/\s\+$//e
 
 	" Delete empty buffers, specially for files opened with --remote option
-	autocmd BufAdd * :call <SID>DeleteBufferIfEmpty()
+	autocmd BufAdd * nested :call <SID>DeleteBufferIfEmpty()
+	" command must be nested to other autocommand will also be called,
+	" specifically MiniBufExpl https://github.com/fholgado/minibufexpl.vim/issues/90#issuecomment-19815252
 
 	" Don't list preview and quickfix window
 	autocmd BufEnter * :call <SID>DelistWindow()
@@ -117,37 +119,11 @@ if &t_Co > 2 || has("gui_running")
   set hlsearch
 endif
 
-" Make the cursor look nicer
-set guicursor+=v:hor50
-set guicursor+=i:ver1
-set guicursor+=a:blinkwait750-blinkon750-blinkoff250
-
 augroup vimrcGui
 	autocmd!
-
 	" Give alt key control to Windows
 	autocmd GUIEnter * simalt ~x
-
-	" Highlight current line
-	autocmd InsertLeave * set nocursorline
-	autocmd InsertEnter * set cursorline
-	" set cursorline will cause MiniBufferExpl to have problem
 augroup END
-
-" Line number
-set numberwidth=5
-set relativenumber
-
-set guitablabel=%-0.12t%M " format of tab label
-set showtabline=1 " show tabs only if there are more than one
-set ruler " show the cursor position all the time
-set showcmd " display incomplete commands
-
-" tabs & right scollbar. No menu, toolbar and bottom scollbar
-set guioptions=erR
-
-" Keep padding around cursor
-set scrolloff=1
 
 " Status line
 set laststatus=2 " always show statusline
@@ -158,8 +134,24 @@ set statusline+=%= " right align from here
 set statusline+=%c,\ %l/%L\ %P " cursor column, line/total percent
 set statusline+=\ [%{strlen(&fenc)?&fenc:'none'},\ %{&ff}]\  " encoding, format
 
-" Smaller preview window
-set previewheight=6
+" Make the cursor look nicer
+set guicursor+=v:hor50
+set guicursor+=i:ver1
+set guicursor+=a:blinkwait750-blinkon750-blinkoff250
+
+" Line number
+set numberwidth=5
+set relativenumber
+
+set colorcolumn=80,120 " set ruler to show at column 80 and 120
+set cursorline " highlight current line
+set guioptions=erR " tabs & right scollbar. No menu, toolbar and bottom scollbar
+set guitablabel=%-0.12t%M " format of tab label
+set previewheight=8 " smaller preview window
+set ruler " show the cursor position all the time
+set scrolloff=1 " keep padding around cursor
+set showcmd " display incomplete commands
+set showtabline=1 " show tabs only if there are more than one
 
 
 " ----- ----- ----- -----
@@ -205,6 +197,10 @@ nnoremap <bs> <c-^>
 nnoremap 0 ^
 vnoremap 0 ^
 
+" make k and l move one extra character
+onoremap l 2l
+onoremap h 2h
+
 " Swap quote with backtick so it's easier to move to column
 noremap ' `
 vnoremap ' `
@@ -230,7 +226,13 @@ vnoremap <a-k> :m '<-2<cr>gv=gv
 " Select last modified/pasted http://vim.wikia.com/wiki/Selecting_your_pasted_text
 nnoremap <expr> <leader>v '`[' . strpart(getregtype(), 0, 1) . '`]'
 " Paste then select
-map <leader>p p<leader>v
+nmap <leader>p p<leader>v
+
+" Navigate between windows
+noremap <c-j>     <c-w>j
+noremap <c-k>     <c-w>k
+noremap <c-h>     <c-w>h
+noremap <c-l>     <c-w>l
 
 " Shortcuts
 nnoremap <leader>s :update<cr>
@@ -247,6 +249,18 @@ nnoremap <F3> g*Nyiw:cw<cr>:grep <c-r>0
 nnoremap <F4> :bdelete<cr>
 nnoremap <c-F4> :BufOnly<cr>
 
+" Get syntax under cursor
+noremap <F1> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
+
+"
+" ----- ----- ----- -----
+" Commands
+" ----- ----- ----- -----
+
+command! CdToFile cd %:p:h
+command! DeleteControlM %s/$//
+command! EVimrc :e $MYVIMRC
+
 
 " ----- ----- ----- -----
 " Plugins
@@ -256,7 +270,8 @@ nnoremap <c-F4> :BufOnly<cr>
 ca UT UndotreeToggle
 
 " Syntastic
-let g:syntastic_javascript_gjslint_conf = '--nostrict'
+let g:syntastic_javascript_jshint_conf = $VIM . '/jshint.json'
+let g:syntastic_csslint_options = '--warnings=none'
 let g:syntastic_python_checker_args = '--ignore=E501'
 
 " delimitmate
@@ -284,32 +299,39 @@ let g:localvimrc_sandbox = 0
 let g:localvimrc_ask = 0
 
 " ctrlp
+let g:ctrlp_show_hidden = 1
 let g:ctrlp_open_multiple_files = 'i'
 let g:ctrlp_by_filename = 1
-nnoremap <c-t> :CtrlPBufTag<cr>
-nnoremap <c-s-t> :CtrlPBufTagAll<cr>
+nnoremap gt :CtrlPBufTag<cr>
+nnoremap gT :CtrlPBufTagAll<cr>
+nnoremap gb :CtrlPBuffer<cr>
 
 " Tagbar
 ca TT TagbarToggle
 let g:tagbar_sort = 0
 let g:tagbar_type_php  = {
-		\ 'ctagstype': 'php',
-		\ 'kinds': [
-			\ 'i:interfaces',
-			\ 'c:classes',
-			\ 'd:constant definitions',
-			\ 'f:functions',
-			\ 'j:javascript functions:1'
-		\ ]
-	\ }
+	\ 'ctagstype': 'php',
+	\ 'kinds': [
+		\ 'i:interfaces',
+		\ 'c:classes',
+		\ 'd:constant definitions',
+		\ 'f:functions',
+		\ 'j:javascript functions:1'
+	\ ]
+\ }
 
 " neocomplcache
+command! RefreshNeocomplcache NeoComplCacheDisable | NeoComplCacheEnable
 inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
 inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<s-tab>'
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
-let g:neocomplcache_enable_camel_case_completion = 1
-let g:neocomplcache_enable_underbar_completion = 1
+let g:neocomplcache_enable_fuzzy_completion = 1
+" let g:neocomplcache_enable_camel_case_completion = 1
+" let g:neocomplcache_enable_underbar_completion = 1
+let g:neocomplcache_manual_completion_start_length = 1
+let g:neocomplcache_enable_wildcard = 0
+let g:neocomplcache_skip_auto_completion_time = '0.5'
 let g:neocomplcache_caching_limit_file_size = 50000
 " higher value = higher priority
 " swap priority of syntax and buffer complete
@@ -319,44 +341,30 @@ let g:neocomplcache_source_rank = {
 	\ }
 
 
-" MiniBufferExpl
+" MiniBufExpl
 nnoremap <tab> :bn!<cr>
 nnoremap <s-tab> :bp!<cr>
 vnoremap <tab> :bn!<cr>
 vnoremap <s-tab> :bp!<cr>
-inoremap <c-tab> <esc>:bn!<cr>
-vnoremap <c-tab> <esc>:bn!<cr>
-nnoremap <c-tab> :bn!<cr>
-inoremap <c-s-tab> <esc>:bp!<cr>
-vnoremap <c-s-tab> <esc>:bp!<cr>
-nnoremap <c-s-tab> :bp!<cr>
+inoremap <c-tab> <esc>:MBEbf<cr>
+vnoremap <c-tab> <esc>:MBEbf<cr>
+nnoremap <c-tab> :MBEbf<cr>
+inoremap <c-s-tab> <esc>:MBEbb<cr>
+vnoremap <c-s-tab> <esc>:MBEbb<cr>
+nnoremap <c-s-tab> :MBEbb<cr>
 let g:miniBufExplUseSingleClick = 1
-let g:miniBufExplMapWindowNavVim = 1 " ctrl hjkl
-hi MBEVisibleActive guibg=#46474a gui=bold
-hi MBEVisibleChangedActive guibg=#46474a gui=bold,italic
+let g:miniBufExplCycleArround = 1
 hi MBENormal guifg=#c2c7cc
 hi MBEChanged guifg=fg gui=italic
 hi link MBEVisibleNormal MBENormal
 hi link MBEVisibleChanged MBEChanged
-let g:miniBufExplCheckDupeBufs = 0
-" Toggle g:miniBufExplCheckDupeBufs because sometimes it get very slow
-map <F12> :call ToggleMiniBufExplCheckDupeBufs()<cr>
-function! ToggleMiniBufExplCheckDupeBufs()
-	if g:miniBufExplCheckDupeBufs == 1
-		let g:miniBufExplCheckDupeBufs = 0
-	else
-		let g:miniBufExplCheckDupeBufs = 1
-	endif
-endfunction
+hi MBEVisibleActiveNormal guibg=#46474a gui=bold
+hi MBEVisibleActiveChanged guibg=#46474a gui=bold,italic
 
 
 " ----- ----- ----- -----
 " Others
 " ----- ----- ----- -----
-
-" Get syntax under cursor
-noremap <F1> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
-
 
 " Code taken from TagbarToggle
 " Get the number of the scratch buffer. Will create one if needed.
