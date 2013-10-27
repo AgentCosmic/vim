@@ -142,6 +142,7 @@ set guicursor+=a:blinkwait750-blinkon750-blinkoff250
 " Line number
 set numberwidth=5
 set relativenumber
+set number
 
 set colorcolumn=80,120 " set ruler to show at column 80 and 120
 set cursorline " highlight current line
@@ -267,7 +268,7 @@ command! EVimrc :e $MYVIMRC
 " ----- ----- ----- -----
 
 " undotree
-ca UT UndotreeToggle
+cabbrev UT UndotreeToggle
 
 " Syntastic
 let g:syntastic_javascript_jshint_conf = $VIM . '/jshint.json'
@@ -305,9 +306,10 @@ let g:ctrlp_by_filename = 1
 nnoremap gt :CtrlPBufTag<cr>
 nnoremap gT :CtrlPBufTagAll<cr>
 nnoremap gb :CtrlPBuffer<cr>
+nnoremap g/ :CtrlPLine<cr>
 
 " Tagbar
-ca TT TagbarToggle
+cabbrev TT TagbarToggle
 let g:tagbar_sort = 0
 let g:tagbar_type_php  = {
 	\ 'ctagstype': 'php',
