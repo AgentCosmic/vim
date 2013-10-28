@@ -283,10 +283,10 @@ let delimitMate_expand_cr = 1
 let g:EasyMotion_leader_key = '<Leader>'
 let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz'
 
-" Zen Coding
-let g:user_zen_leader_key = '<c-y>'
-let g:user_zen_expandabbr_key = '<c-e>'
-let g:use_zen_complete_tag = 1
+" Emmet
+let g:user_emmet_leader_key = '<c-y>'
+let g:user_emmet_expandabbr_key = '<c-e>'
+let g:use_emmet_complete_tag = 1
 
 " Comments
 nmap <leader>c <c-_><c-_>
