@@ -68,6 +68,9 @@ augroup vimrcBehavior
 	autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
 	autocmd FileType python setlocal omnifunc=python3complete#Complete
 
+	" less files
+	autocmd BufNewFile,BufRead *.less setlocal filetype=css
+
 	" Remove trailing space before saving
 	autocmd BufWritePre *.css,*.htm,*.html,*.js,*.php,*.py :%s/\s\+$//e
 
@@ -286,7 +289,8 @@ let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz'
 " Emmet
 let g:user_emmet_leader_key = '<c-y>'
 let g:user_emmet_expandabbr_key = '<c-e>'
-let g:use_emmet_complete_tag = 1
+" let g:user_emmet_expandword_key = '<c-e>'
+let g:user_emmet_complete_tag = 1
 
 " Comments
 nmap <leader>c <c-_><c-_>
@@ -303,6 +307,10 @@ let g:localvimrc_ask = 0
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_open_multiple_files = 'i'
 let g:ctrlp_by_filename = 1
+let g:ctrlp_custom_ignore = {
+	\ 'dir': '\v[\/](\..+)$',
+	\ 'file': '\v[\/](Thumbs.db)$'
+\ }
 nnoremap gt :CtrlPBufTag<cr>
 nnoremap gT :CtrlPBufTagAll<cr>
 nnoremap gb :CtrlPBuffer<cr>
@@ -340,7 +348,7 @@ let g:neocomplcache_caching_limit_file_size = 50000
 let g:neocomplcache_source_rank = {
 	\ 'buffer_complete': 7,
 	\ 'syntax_complete': 5
-	\ }
+\ }
 
 
 " MiniBufExpl
