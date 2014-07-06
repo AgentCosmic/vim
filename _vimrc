@@ -252,6 +252,7 @@ nnoremap <F3> g*Nyiw:cw<cr>:grep <c-r>0
 " Delete buffer
 nnoremap <F4> :bdelete<cr>
 nnoremap <c-F4> :BufOnly<cr>
+nnoremap <Space> :CtrlP<cr>
 
 " Get syntax under cursor
 noremap <F1> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
