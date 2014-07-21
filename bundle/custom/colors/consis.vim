@@ -98,4 +98,12 @@ hi NonText         guifg=#6f7978 guibg=#242526
 hi ColorColumn                   guibg=#1b1c1d
 
 
+hi MBENormal guifg=#d6d3ce
+hi MBEChanged guifg=fg gui=italic
+hi link MBEVisibleNormal MBENormal
+hi link MBEVisibleChanged MBEChanged
+hi MBEVisibleActiveNormal guibg=#3d3b37 gui=bold
+hi MBEVisibleActiveChanged guibg=#3d3b37 gui=bold,italic
+
+
 hi phpFunctions  guifg=#e8b5ff

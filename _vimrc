@@ -274,6 +274,9 @@ command! EVimrc :e $MYVIMRC
 " undotree
 cabbrev UT UndotreeToggle
 
+" fugitive
+cabbrev GC Gcommit -a -m
+
 " Syntastic
 let g:syntastic_javascript_jshint_conf = $VIM . '/jshint.json'
 let g:syntastic_csslint_options = '--warnings=none'
@@ -365,12 +368,6 @@ vnoremap <c-s-tab> <esc>:MBEbb<cr>
 nnoremap <c-s-tab> :MBEbb<cr>
 let g:miniBufExplUseSingleClick = 1
 let g:miniBufExplCycleArround = 1
-hi MBENormal guifg=#c2c7cc
-hi MBEChanged guifg=fg gui=italic
-hi link MBEVisibleNormal MBENormal
-hi link MBEVisibleChanged MBEChanged
-hi MBEVisibleActiveNormal guibg=#46474a gui=bold
-hi MBEVisibleActiveChanged guibg=#46474a gui=bold,italic
 
 
 " ----- ----- ----- -----
