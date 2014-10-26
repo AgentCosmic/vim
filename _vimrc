@@ -37,7 +37,7 @@ set wildignore+=*.swp,.git,.svn,*.pyc,*.png,*.jpg,*.gif,*.psd,desktop.ini " Igno
 set hidden " Don't unload buffer when it's hidden
 set lazyredraw " Don't redraw while executing macros (good performance config)
 set encoding=utf8 " Set utf8 as standard encoding and en_US as the standard language
-set synmaxcol=1000 " Don't try to highlight lines longer than this
+set synmaxcol=500 " Don't try to highlight lines longer than this
 
 " Disable backup litters
 set nobackup
@@ -100,6 +100,17 @@ function! s:DelistWindow()
 	endif
 endf 
 
+" vp doesn't replace paste buffer
+function! RestoreRegister()
+	let @" = s:restore_reg
+	return ''
+endfunction
+function! s:Repl()
+	let s:restore_reg = @"
+	return "p@=RestoreRegister()\<cr>"
+endfunction
+vmap <silent> <expr> p <sid>Repl()
+
 
 " ----- ----- ----- -----
 " GUI
@@ -108,6 +119,9 @@ endf
 if has('gui_running')
 	set guifont=Consolas:h10:cANSI
 	colorscheme consis
+else
+	set background=dark
+	colorscheme solarized
 endif
 
 " In many terminal emulators the mouse works just fine, thus enable it.
@@ -166,7 +180,7 @@ set showtabline=1 " show tabs only if there are more than one
 set linebreak
 
 " Formatting
-set textwidth=79
+set textwidth=119
 set formatoptions=croq " only comments
 
 " Indentation
@@ -179,7 +193,7 @@ set nocindent
 
 " Folding
 set foldmethod=indent
-set foldnestmax=5
+set foldnestmax=8
 set foldlevel=9 " prefer to be open by default
 set nofoldenable " disable by default
 
@@ -230,13 +244,17 @@ vnoremap <a-k> :m '<-2<cr>gv=gv
 " Select last modified/pasted http://vim.wikia.com/wiki/Selecting_your_pasted_text
 nnoremap <expr> <leader>v '`[' . strpart(getregtype(), 0, 1) . '`]'
 " Paste then select
-nmap <leader>p p<leader>v
+" nmap <leader>p p<leader>v
 
 " Navigate between windows
 noremap <c-j>     <c-w>j
 noremap <c-k>     <c-w>k
 noremap <c-h>     <c-w>h
 noremap <c-l>     <c-w>l
+
+" Increment, decrement number
+nnoremap <c-up> <C-a>
+nnoremap <c-down> <C-x>
 
 " Shortcuts
 nnoremap <leader>s :update<cr>
@@ -253,6 +271,17 @@ nnoremap <F3> g*Nyiw:cw<cr>:grep <c-r>0
 nnoremap <F4> :bdelete<cr>
 nnoremap <c-F4> :BufOnly<cr>
 nnoremap <Space> :CtrlP<cr>
+
+" Disable function keys in insert mode
+inoremap <F2> <esc><F2>
+inoremap <F3> <esc><F3>
+inoremap <F4> <esc><F4>
+inoremap <F5> <esc><F5>
+inoremap <F6> <esc><F6>
+inoremap <F7> <esc><F7>
+inoremap <F8> <esc><F8>
+inoremap <F9> <esc><F9>
+inoremap <F10> <esc><F10>
 
 " Get syntax under cursor
 noremap <F1> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
@@ -277,9 +306,13 @@ cabbrev UT UndotreeToggle
 " fugitive
 cabbrev GC Gcommit -a -m
 
+" Sideways
+cabbrev SL SidewaysLeft
+cabbrev SR SidewaysRight
+
 " Syntastic
-let g:syntastic_javascript_jshint_conf = $VIM . '/jshint.json'
-let g:syntastic_csslint_options = '--warnings=none'
+let g:syntastic_javascript_jshint_args = $VIM . '/jshint.json'
+let g:syntastic_csslint_args = '--warnings=none'
 let g:syntastic_python_checker_args = '--ignore=E501'
 
 " delimitmate
@@ -312,7 +345,7 @@ let g:ctrlp_show_hidden = 1
 let g:ctrlp_open_multiple_files = 'i'
 let g:ctrlp_by_filename = 1
 let g:ctrlp_custom_ignore = {
-	\ 'dir': '\v[\/](\..+)$',
+	\ 'dir': '\v[\/](\..+|node_modules)$',
 	\ 'file': '\v[\/](Thumbs.db)$'
 \ }
 nnoremap gt :CtrlPBufTag<cr>
@@ -368,6 +401,13 @@ vnoremap <c-s-tab> <esc>:MBEbb<cr>
 nnoremap <c-s-tab> :MBEbb<cr>
 let g:miniBufExplUseSingleClick = 1
 let g:miniBufExplCycleArround = 1
+" For third party colorschemes
+hi MBENormal guifg=fg gui=none
+hi MBEChanged guifg=fg gui=italic
+hi link MBEVisibleNormal MBENormal
+hi link MBEVisibleChanged MBEChanged
+hi MBEVisibleActiveNormal gui=bold
+hi MBEVisibleActiveChanged gui=bold,italic
 
 
 " ----- ----- ----- -----
