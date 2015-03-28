@@ -10,6 +10,8 @@ Software used:
 - ctags
 - php
 - python
+- lua
+- silver searcher
 - nodejs
 	- jshint
 	- csslint

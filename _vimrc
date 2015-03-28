@@ -30,7 +30,7 @@ filetype plugin indent on " Important for a lot of things
 set incsearch " Do incremental searching
 set ignorecase " Ignore case when searching, but search capital if used
 set smartcase " But use it when there is uppercase
-set grepprg=grep\ -rnH " Use grep instead of findstr
+set grepprg=ag\ --nogroup\ --nocolor\ --column
 set history=50 " Keep 50 lines of command line history
 set wildmenu " Auto complete on command line
 set wildignore+=*.swp,.git,.svn,*.pyc,*.png,*.jpg,*.gif,*.psd,desktop.ini " Ignore these files when searching
@@ -69,7 +69,7 @@ augroup vimrcBehavior
 	autocmd FileType python setlocal omnifunc=python3complete#Complete
 
 	" less files
-	autocmd BufNewFile,BufRead *.less setlocal filetype=css
+	" autocmd BufNewFile,BufRead *.less setlocal filetype=css
 
 	" Remove trailing space before saving
 	autocmd BufWritePre *.css,*.htm,*.html,*.js,*.php,*.py :%s/\s\+$//e
@@ -118,8 +118,10 @@ vmap <silent> <expr> p <sid>Repl()
 
 if has('gui_running')
 	set guifont=Consolas:h10:cANSI
+	set background=dark
 	colorscheme consis
 else
+	set t_Co=256
 	set background=dark
 	colorscheme solarized
 endif
@@ -247,14 +249,16 @@ nnoremap <expr> <leader>v '`[' . strpart(getregtype(), 0, 1) . '`]'
 " nmap <leader>p p<leader>v
 
 " Navigate between windows
-noremap <c-j>     <c-w>j
-noremap <c-k>     <c-w>k
-noremap <c-h>     <c-w>h
-noremap <c-l>     <c-w>l
+noremap <c-j> <c-w>j
+noremap <c-k> <c-w>k
+noremap <c-h> <c-w>h
+noremap <c-l> <c-w>l
 
 " Increment, decrement number
 nnoremap <c-up> <C-a>
 nnoremap <c-down> <C-x>
+nnoremap <c-s-up> 10<C-a>
+nnoremap <c-s-down> 10<C-x>
 
 " Shortcuts
 nnoremap <leader>s :update<cr>
@@ -283,6 +287,9 @@ inoremap <F8> <esc><F8>
 inoremap <F9> <esc><F9>
 inoremap <F10> <esc><F10>
 
+" Highlight when double click
+nnoremap <silent> <2-leftmouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viwg<c-h>
+
 " Get syntax under cursor
 noremap <F1> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
 
@@ -306,12 +313,9 @@ cabbrev UT UndotreeToggle
 " fugitive
 cabbrev GC Gcommit -a -m
 
-" Sideways
-cabbrev SL SidewaysLeft
-cabbrev SR SidewaysRight
-
 " Syntastic
 let g:syntastic_javascript_jshint_args = $VIM . '/jshint.json'
+" let g:syntastic_javascript_checkers = ['jsxhint']
 let g:syntastic_csslint_args = '--warnings=none'
 let g:syntastic_python_checker_args = '--ignore=E501'
 
@@ -345,7 +349,7 @@ let g:ctrlp_show_hidden = 1
 let g:ctrlp_open_multiple_files = 'i'
 let g:ctrlp_by_filename = 1
 let g:ctrlp_custom_ignore = {
-	\ 'dir': '\v[\/](\..+|node_modules)$',
+	\ 'dir': '\v[\/](\..+)$',
 	\ 'file': '\v[\/](Thumbs.db)$'
 \ }
 nnoremap gt :CtrlPBufTag<cr>
@@ -387,12 +391,15 @@ let g:neocomplcache_source_rank = {
 	\ 'syntax_complete': 5
 \ }
 
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#auto_completion_start_length = 1
+
 
 " MiniBufExpl
-nnoremap <tab> :bn!<cr>
-nnoremap <s-tab> :bp!<cr>
-vnoremap <tab> :bn!<cr>
-vnoremap <s-tab> :bp!<cr>
+nnoremap <tab> :MBEbn<cr>
+nnoremap <s-tab> :MBEbp<cr>
+vnoremap <tab> :MBEbn<cr>
+vnoremap <s-tab> :MBEbp<cr>
 inoremap <c-tab> <esc>:MBEbf<cr>
 vnoremap <c-tab> <esc>:MBEbf<cr>
 nnoremap <c-tab> :MBEbf<cr>
@@ -402,12 +409,12 @@ nnoremap <c-s-tab> :MBEbb<cr>
 let g:miniBufExplUseSingleClick = 1
 let g:miniBufExplCycleArround = 1
 " For third party colorschemes
-hi MBENormal guifg=fg gui=none
-hi MBEChanged guifg=fg gui=italic
-hi link MBEVisibleNormal MBENormal
-hi link MBEVisibleChanged MBEChanged
-hi MBEVisibleActiveNormal gui=bold
-hi MBEVisibleActiveChanged gui=bold,italic
+" hi MBENormal guifg=fg gui=none
+" hi MBEChanged guifg=fg gui=italic
+" hi link MBEVisibleNormal MBENormal
+" hi link MBEVisibleChanged MBEChanged
+" hi MBEVisibleActiveNormal gui=bold
+" hi MBEVisibleActiveChanged gui=bold,italic
 
 
 " ----- ----- ----- -----
