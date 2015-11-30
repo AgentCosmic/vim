@@ -111,14 +111,16 @@ vmap <silent> <expr> p <sid>Repl()
 " ----- ----- ----- -----
 
 if has('gui_running')
-	set guifont=Consolas:h10:cANSI
+	set guifont=Monaco:h10
 	set background=dark
 	colorscheme consis
+	set transparency=10
 else
 	set t_Co=256
 	set background=dark
-	colorscheme solarized
+	colorscheme desert
 endif
+
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
   set mouse=a
@@ -280,7 +282,7 @@ nnoremap <silent> <2-leftmouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\
 " Get syntax under cursor
 noremap <F1> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
 
-"
+
 " ----- ----- ----- -----
 " Commands
 " ----- ----- ----- -----
@@ -339,6 +341,7 @@ let g:ctrlp_custom_ignore = {
 	\ 'dir': '\v[\/](\..+)$',
 	\ 'file': '\v[\/](Thumbs.db)$'
 \ }
+let g:ctrlp_buftag_ctags_bin = '/usr/local/bin/ctags'
 nnoremap gt :CtrlPBufTag<cr>
 nnoremap gT :CtrlPBufTagAll<cr>
 nnoremap gb :CtrlPBuffer<cr>
