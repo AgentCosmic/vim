@@ -8,20 +8,6 @@ behave mswin
 " Change home directory
 let $HOME = $VIM . '/home'
 
-" Pathogen doesn't need to load itself
-let g:pathogen_disabled = ['vim-pathogen']
-
-" Disable localvimrc if it's here because we will load it later in the script
-let hasLvimrc = filereadable('_lvimrc')
-if hasLvimrc
-	let g:pathogen_disabled = add(g:pathogen_disabled, 'vim-localvimrc')
-endif
-
-" Start Pathogen First!
-source $VIM/bundle/vim-pathogen/autoload/pathogen.vim
-execute pathogen#infect(expand('$VIM/bundle/{}'))
-
-
 " ----- ----- ----- -----
 " Behavior
 " ----- ----- ----- -----
@@ -307,6 +293,38 @@ command! EVimrc :e $MYVIMRC
 " Plugins
 " ----- ----- ----- -----
 
+call plug#begin('$HOME/plugged')
+Plug 'embear/vim-localvimrc'
+Plug 'fholgado/minibufexpl.vim'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'Shougo/neocomplete.vim'
+Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-surround'
+Plug 'Raimondi/delimitMate'
+Plug 'easymotion/vim-easymotion'
+Plug 'sickill/vim-pasta'
+Plug 'majutsushi/tagbar'
+Plug 'scrooloose/syntastic'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
+Plug 'ap/vim-css-color'
+Plug 'mattn/emmet-vim'
+Plug 'pangloss/vim-javascript'
+Plug 'captbaritone/better-indent-support-for-php-with-html'
+Plug 'tpope/vim-fugitive'
+Plug 'nathanaelkane/vim-indent-guides', {'on': ['IndentGuidesEnable', 'IndentGuidesToggle']}
+" Evaluating
+Plug 'haya14busa/incsearch.vim'
+Plug 'haya14busa/incsearch-fuzzy.vim'
+Plug 'AndrewRadev/sideways.vim'
+Plug 'python-mode/python-mode', {'for': 'python'}
+call plug#end()
+
+
+" airline
+let g:airline_theme = 'bubblegum'
+
 " undotree
 cabbrev UT UndotreeToggle
 
@@ -415,6 +433,21 @@ let g:miniBufExplCycleArround = 1
 " hi link MBEVisibleChanged MBEChanged
 " hi MBEVisibleActiveNormal gui=bold
 " hi MBEVisibleActiveChanged gui=bold,italic
+
+
+" incsearch
+map /  <plug>(incsearch-forward)
+map ?  <plug>(incsearch-backward)
+map g/ <plug>(incsearch-stay)
+" incsearch-fuzzy
+map z/ <plug>(incsearch-fuzzy-/)
+map z? <plug>(incsearch-fuzzy-?)
+map zg/ <plug>(incsearch-fuzzy-stay)
+
+
+" sideways
+noremap <c-left> :SidewaysLeft<cr>
+noremap <c-right> :SidewaysRight<cr>
 
 
 " ----- ----- ----- -----
@@ -590,12 +623,3 @@ function! MyDiff()
 	endif
 	silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
-
-
-" ----- ----- ----- -----
-" _lvimrv
-" ----- ----- ----- -----
-" we still need this becuase localvimrc does not load fast enough
-if hasLvimrc
-	source _lvimrc
-endif
