@@ -97,6 +97,12 @@ function! s:Repl()
 endfunction
 vmap <silent> <expr> p <sid>Repl()
 
+" keep cursor position when changin buffer
+if v:version >= 700
+  au BufLeave * let b:winview = winsaveview()
+  au BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
+endif
+
 
 " ----- ----- ----- -----
 " GUI
@@ -189,6 +195,9 @@ set nofoldenable " disable by default
 " ----- ----- ----- -----
 " Remapping
 " ----- ----- ----- -----
+
+" Reset <c-f> mapping to original (scroll down) that was overridden in mswin.vim
+unmap <c-f>
 
 " Delete without jumping http://vim.1045645.n5.nabble.com/How-to-delete-range-of-lines-without-moving-cursor-td5713219.html
 command! -range D <line1>,<line2>d | norm <c-o> 
@@ -293,6 +302,7 @@ command! EVimrc :e $MYVIMRC
 " Plugins
 " ----- ----- ----- -----
 
+" checkout https://github.com/Shougo/dein.vim/
 call plug#begin('$HOME/plugged')
 Plug 'embear/vim-localvimrc'
 Plug 'fholgado/minibufexpl.vim'
@@ -304,38 +314,47 @@ Plug 'Raimondi/delimitMate'
 Plug 'easymotion/vim-easymotion'
 Plug 'sickill/vim-pasta'
 Plug 'majutsushi/tagbar'
-Plug 'scrooloose/syntastic'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'ap/vim-css-color'
 Plug 'mattn/emmet-vim'
 Plug 'pangloss/vim-javascript'
 Plug 'captbaritone/better-indent-support-for-php-with-html'
-Plug 'tpope/vim-fugitive'
 Plug 'nathanaelkane/vim-indent-guides', {'on': ['IndentGuidesEnable', 'IndentGuidesToggle']}
-" Evaluating
-Plug 'haya14busa/incsearch.vim'
-Plug 'haya14busa/incsearch-fuzzy.vim'
 Plug 'AndrewRadev/sideways.vim'
-Plug 'python-mode/python-mode', {'for': 'python'}
+Plug 'itchyny/vim-cursorword'
+Plug 'w0rp/ale'
+Plug 'haya14busa/incsearch.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+" Evaluating
+" Plug 'python-mode/python-mode', {'for': 'python'}
+Plug 'sbdchd/neoformat', {'on': ['Neoformat']}
+Plug 'wellle/targets.vim'
+
+" Plug 'haya14busa/incsearch-fuzzy.vim'
+" Plug 'heavenshell/vim-jsdoc.git
+" https://github.com/ramitos/jsctags
+" https://github.com/ternjs/tern_for_vim
 call plug#end()
 
 
 " airline
+let g:airline#extensions#branch#enabled = 0
+let g:airline_detect_paste = 0
+let g:airline_detect_crypt = 0
+let g:airline_extensions = ['quickfix', 'ctrlp', 'whitespace', 'ale']
 let g:airline_theme = 'bubblegum'
+let g:airline_powerline_fonts = 1
+set guifont=Hack:h9
 
 " undotree
 cabbrev UT UndotreeToggle
 
-" fugitive
-cabbrev GC Gcommit -a -m
-
-" Syntastic
-let g:syntastic_javascript_jshint_args = $VIM . '/jshint.json'
-" let g:syntastic_javascript_checkers = ['jsxhint']
-let g:syntastic_csslint_args = '--warnings=none'
-let g:syntastic_python_checker_args = '--ignore=E501'
+" ale
+let g:ale_sign_column_always = 1
+let g:ale_linters = {'javascript': ['jshint']}
+" let g:ale_lint_on_save = 1
+" let g:ale_lint_on_text_changed = 0
 
 " delimitmate
 let delimitMate_matchpairs = "(:),[:],{:}"
@@ -353,7 +372,7 @@ let g:user_emmet_complete_tag = 1
 
 " Comments
 nmap <leader>c <c-_><c-_>
-imap <leader>c <c-o><c-_><c-_>
+" imap <leader>c <c-o><c-_><c-_>
 vmap <leader>c <c-_><c-_>
 
 " localvimrc
@@ -389,28 +408,17 @@ let g:tagbar_type_php  = {
 	\ ]
 \ }
 
-" neocomplcache
-command! RefreshNeocomplcache NeoComplCacheDisable | NeoComplCacheEnable
+" neocomplete
 inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
 inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<s-tab>'
-let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_enable_smart_case = 1
-let g:neocomplcache_enable_fuzzy_completion = 1
-" let g:neocomplcache_enable_camel_case_completion = 1
-" let g:neocomplcache_enable_underbar_completion = 1
-let g:neocomplcache_manual_completion_start_length = 1
-let g:neocomplcache_enable_wildcard = 0
-let g:neocomplcache_skip_auto_completion_time = '0.5'
-let g:neocomplcache_caching_limit_file_size = 50000
-" higher value = higher priority
-" swap priority of syntax and buffer complete
-let g:neocomplcache_source_rank = {
-	\ 'buffer_complete': 7,
-	\ 'syntax_complete': 5
-\ }
-
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#auto_completion_start_length = 1
+let g:neocomplete#min_keyword_length = 3
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+if !exists('g:neocomplete#delimiter_patterns')
+	let g:neocomplete#delimiter_patterns= {}
+endif
+let g:neocomplete#delimiter_patterns.php = ['\', '::', '->']
 
 
 " MiniBufExpl
@@ -446,8 +454,9 @@ map zg/ <plug>(incsearch-fuzzy-stay)
 
 
 " sideways
-noremap <c-left> :SidewaysLeft<cr>
-noremap <c-right> :SidewaysRight<cr>
+noremap <a-h> :SidewaysLeft<cr>
+noremap <a-l> :SidewaysRight<cr>
+
 
 
 " ----- ----- ----- -----
