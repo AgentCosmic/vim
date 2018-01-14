@@ -16,7 +16,8 @@ filetype plugin indent on " Important for a lot of things
 set incsearch " Do incremental searching
 set ignorecase " Ignore case when searching, but search capital if used
 set smartcase " But use it when there is uppercase
-set grepprg=ag\ --nogroup\ --nocolor\ --column
+set grepprg=rg\ --vimgrep\ --no-heading
+set grepformat=%f:%l:%c:%m,%f:%l:%m
 set history=50 " Keep 50 lines of command line history
 set wildmenu " Auto complete on command line
 set wildignore+=*.swp,.git,.svn,*.pyc,*.png,*.jpg,*.gif,*.psd,desktop.ini " Ignore these files when searching
@@ -61,7 +62,7 @@ augroup vimrcBehavior
 	autocmd BufWritePre *.css,*.htm,*.html,*.js,*.php,*.py :%s/\s\+$//e
 
 	" Delete empty buffers, specially for files opened with --remote option
-	autocmd BufAdd * nested :call <SID>DeleteBufferIfEmpty()
+	" autocmd BufAdd * nested :call <SID>DeleteBufferIfEmpty()
 	" command must be nested to other autocommand will also be called,
 	" specifically MiniBufExpl https://github.com/fholgado/minibufexpl.vim/issues/90#issuecomment-19815252
 
@@ -69,14 +70,14 @@ augroup vimrcBehavior
 	autocmd BufEnter * :call <SID>DelistWindow()
 augroup END
 
-function! s:DeleteBufferIfEmpty()
-	" If no name and no content
-	if bufname('%') == '' && line('$') == 1 && getline(1) == ''
-		bwipe
-		" This will trigger filetype detection, mainly to trigger syntax highlighting
-		doautocmd BufRead
-	endif
-endfunction
+" function! s:DeleteBufferIfEmpty()
+" 	" If no name and no content
+" 	if bufname('%') == '' && line('$') == 1 && getline(1) == ''
+" 		bwipe
+" 		" This will trigger filetype detection, mainly to trigger syntax highlighting
+" 		doautocmd BufRead
+" 	endif
+" endfunction
 
 function! s:DelistWindow() 
     if &previewwindow 
@@ -97,11 +98,12 @@ function! s:Repl()
 endfunction
 vmap <silent> <expr> p <sid>Repl()
 
-" keep cursor position when changin buffer
-if v:version >= 700
-  au BufLeave * let b:winview = winsaveview()
-  au BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
-endif
+" keep cursor position when changing buffer
+augroup keepCursorPosition
+	autocmd!
+	autocmd BufLeave * let b:winview = winsaveview()
+	autocmd BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
+augroup END
 
 
 " ----- ----- ----- -----
@@ -111,7 +113,7 @@ endif
 if has('gui_running')
 	set guifont=Consolas:h10:cANSI
 	set background=dark
-	colorscheme consis
+	colorscheme comfort
 else
 	set t_Co=256
 	set background=dark
@@ -138,11 +140,11 @@ augroup END
 
 " Status line
 set laststatus=2 " always show statusline
-set statusline=\ %{getcwd()}\ -\ %f " working directory followed by file path
+set statusline=\ %{getcwd()}\ \ \|\ \ %f " working directory followed by file path
 set statusline+=\ %r " readonly flag
 set statusline+=\ %m " modified flag
 set statusline+=%= " right align from here
-set statusline+=%c,\ %l/%L\ %P " cursor column, line/total percent
+set statusline+=%c,\ %l\ \|\ %P\ of\ %L\ " cursor column, line/total percent
 set statusline+=\ [%{strlen(&fenc)?&fenc:'none'},\ %{&ff}]\  " encoding, format
 
 " Make the cursor look nicer
@@ -269,7 +271,6 @@ nnoremap <F3> g*Nyiw:cw<cr>:grep <c-r>0
 " Delete buffer
 nnoremap <F4> :bdelete<cr>
 nnoremap <c-F4> :BufOnly<cr>
-nnoremap <Space> :CtrlP<cr>
 
 " Disable function keys in insert mode
 inoremap <F2> <esc><F2>
@@ -307,7 +308,10 @@ call plug#begin('$HOME/plugged')
 Plug 'embear/vim-localvimrc'
 Plug 'fholgado/minibufexpl.vim'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'Shougo/neocomplete.vim'
+" Plug 'Shougo/neocomplete.vim'
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp' " required for deoplete
+Plug 'roxma/vim-hug-neovim-rpc' " required for deoplete
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-surround'
 Plug 'Raimondi/delimitMate'
@@ -331,7 +335,6 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'sbdchd/neoformat', {'on': ['Neoformat']}
 Plug 'wellle/targets.vim'
 
-" Plug 'haya14busa/incsearch-fuzzy.vim'
 " Plug 'heavenshell/vim-jsdoc.git
 " https://github.com/ramitos/jsctags
 " https://github.com/ternjs/tern_for_vim
@@ -382,13 +385,23 @@ let g:localvimrc_sandbox = 0
 let g:localvimrc_ask = 0
 
 " ctrlp
+let g:ctrlp_map = '<space>'
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_open_multiple_files = 'i'
 let g:ctrlp_by_filename = 1
+let g:ctrlp_match_current_file = 0
 let g:ctrlp_custom_ignore = {
 	\ 'dir': '\v[\/](\..+)$',
 	\ 'file': '\v[\/](Thumbs.db)$'
 \ }
+let g:user_command_async = 1
+" let g:ctrlp_user_command = 'rg %s --files --color=never'
+let g:ctrlp_user_command = {
+			\ 'types': {
+				\ 1: ['.git', 'cd %s && git ls-files'],
+			\ },
+			\ 'fallback': 'rg %s --files --color=never'
+			\ }
 nnoremap gt :CtrlPBufTag<cr>
 nnoremap gT :CtrlPBufTagAll<cr>
 nnoremap gb :CtrlPBuffer<cr>
@@ -408,17 +421,31 @@ let g:tagbar_type_php  = {
 	\ ]
 \ }
 
-" neocomplete
+" deoplete
 inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
 inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<s-tab>'
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#auto_completion_start_length = 1
-let g:neocomplete#min_keyword_length = 3
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-if !exists('g:neocomplete#delimiter_patterns')
-	let g:neocomplete#delimiter_patterns= {}
+let g:python3_host_prog = 'C:/Python/36/python'
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#auto_completion_start_length = 1
+let g:deoplete#min_keyword_length = 3
+let g:deoplete#sources#syntax#min_keyword_length = 3
+if !exists('g:deoplete#delimiter_patterns')
+	let g:deoplete#delimiter_patterns= {}
 endif
-let g:neocomplete#delimiter_patterns.php = ['\', '::', '->']
+let g:deoplete#delimiter_patterns.php = ['\', '::', '->']
+
+" neocomplete
+" inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
+" inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<s-tab>'
+" let g:neocomplete#enable_at_startup = 1
+" let g:neocomplete#auto_completion_start_length = 1
+" let g:neocomplete#min_keyword_length = 3
+" let g:neocomplete#sources#syntax#min_keyword_length = 3
+" if !exists('g:neocomplete#delimiter_patterns')
+" 	let g:neocomplete#delimiter_patterns= {}
+" endif
+" let g:neocomplete#delimiter_patterns.php = ['\', '::', '->']
 
 
 " MiniBufExpl
@@ -446,11 +473,6 @@ let g:miniBufExplCycleArround = 1
 " incsearch
 map /  <plug>(incsearch-forward)
 map ?  <plug>(incsearch-backward)
-map g/ <plug>(incsearch-stay)
-" incsearch-fuzzy
-map z/ <plug>(incsearch-fuzzy-/)
-map z? <plug>(incsearch-fuzzy-?)
-map zg/ <plug>(incsearch-fuzzy-stay)
 
 
 " sideways
