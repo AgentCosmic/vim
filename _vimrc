@@ -233,12 +233,12 @@ inoremap , <c-g>u,
 inoremap = <c-g>u=
 
 " Move line use alt-j and alt-k http://vim.wikia.com/wiki/Moving_lines_up_or_down
-nnoremap <a-j> :m .+1<cr>==
-nnoremap <a-k> :m .-2<cr>==
-inoremap <a-j> <esc>:m .+1<cr>==gi
-inoremap <a-k> <esc>:m .-2<cr>==gi
-vnoremap <a-j> :m '>+1<cr>gv=gv
-vnoremap <a-k> :m '<-2<cr>gv=gv
+nnoremap <c-j> :m .+1<cr>==
+nnoremap <c-k> :m .-2<cr>==
+inoremap <c-j> <esc>:m .+1<cr>==gi
+inoremap <c-k> <esc>:m .-2<cr>==gi
+vnoremap <c-j> :m '>+1<cr>gv=gv
+vnoremap <c-k> :m '<-2<cr>gv=gv
 
 " Select last modified/pasted http://vim.wikia.com/wiki/Selecting_your_pasted_text
 nnoremap <expr> <leader>v '`[' . strpart(getregtype(), 0, 1) . '`]'
@@ -246,10 +246,10 @@ nnoremap <expr> <leader>v '`[' . strpart(getregtype(), 0, 1) . '`]'
 " nmap <leader>p p<leader>v
 
 " Navigate between windows
-noremap <c-j> <c-w>j
-noremap <c-k> <c-w>k
-noremap <c-h> <c-w>h
-noremap <c-l> <c-w>l
+noremap <a-j> <c-w>j
+noremap <a-k> <c-w>k
+noremap <a-h> <c-w>h
+noremap <a-l> <c-w>l
 
 " Increment, decrement number
 nnoremap <c-up> <C-a>
@@ -270,7 +270,6 @@ nnoremap <F2> yiw:%s/\<<c-r>0\>/
 nnoremap <F3> g*Nyiw:cw<cr>:grep <c-r>0
 " Delete buffer
 nnoremap <F4> :bdelete<cr>
-nnoremap <c-F4> :BufOnly<cr>
 
 " Disable function keys in insert mode
 inoremap <F2> <esc><F2>
@@ -306,6 +305,7 @@ command! EVimrc :e $MYVIMRC
 " checkout https://github.com/Shougo/dein.vim/
 call plug#begin('$HOME/plugged')
 Plug 'embear/vim-localvimrc'
+Plug 'duff/vim-bufonly'
 Plug 'fholgado/minibufexpl.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'Shougo/deoplete.nvim'
@@ -330,15 +330,17 @@ Plug 'haya14busa/incsearch.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " Evaluating
-" Plug 'python-mode/python-mode', {'for': 'python'}
-Plug 'sbdchd/neoformat', {'on': ['Neoformat']}
 Plug 'wellle/targets.vim'
+" Plug 'python-mode/python-mode', {'for': 'python'}
+" Plug 'sbdchd/neoformat', {'on': ['Neoformat']}
 
 " Plug 'heavenshell/vim-jsdoc.git
-" https://github.com/ramitos/jsctags
-" https://github.com/ternjs/tern_for_vim
+" https://langserver.org/
+" https://github.com/autozimu/LanguageClient-neovim
 call plug#end()
 
+" BufOnly
+nnoremap <c-F4> :BufOnly<cr>
 
 " airline
 let g:airline#extensions#branch#enabled = 0
@@ -374,8 +376,8 @@ let g:user_emmet_complete_tag = 1
 
 " Comments
 nmap <leader>c <c-_><c-_>
-" imap <leader>c <c-o><c-_><c-_>
 vmap <leader>c <c-_><c-_>
+" imap <leader>c <c-o><c-_><c-_>
 
 " localvimrc
 let g:localvimrc_name = '_lvimrc'
@@ -426,7 +428,6 @@ inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
 inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<s-tab>'
 let g:python3_host_prog = 'C:/Python/36/python'
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_completion_start_length = 1
 let g:deoplete#min_keyword_length = 3
 let g:deoplete#sources#syntax#min_keyword_length = 3
@@ -463,158 +464,14 @@ map ?  <plug>(incsearch-backward)
 
 
 " sideways
-noremap <a-h> :SidewaysLeft<cr>
-noremap <a-l> :SidewaysRight<cr>
+noremap <c-h> :SidewaysLeft<cr>
+noremap <c-l> :SidewaysRight<cr>
 
 
 
 " ----- ----- ----- -----
 " Others
 " ----- ----- ----- -----
-
-" Code taken from TagbarToggle
-" Get the number of the scratch buffer. Will create one if needed.
-function! GetScratchBuffer(name) abort
-	let buffer_number = bufwinnr(a:name)
-	if buffer_number == -1
-		" create buffer
-		let eventignore_save = &eventignore
-		set eventignore=all
-		execute 'silent keepalt belowright vertical 60split ' . a:name
-		let &eventignore = eventignore_save
-
-		setlocal noreadonly " in case the "view" mode is used
-		setlocal buftype=nofile
-		setlocal bufhidden=hide
-		setlocal noswapfile
-		setlocal nobuflisted
-		setlocal nomodifiable
-		setlocal nolist
-		setlocal nonumber
-		setlocal winfixwidth
-		setlocal textwidth=0
-		setlocal nocursorline
-		setlocal nocursorcolumn
-		setlocal nospell
-
-		if exists('+relativenumber')
-			setlocal norelativenumber
-		endif
-
-		setlocal nofoldenable
-		setlocal foldcolumn=0
-		" Reset fold settings in case a plugin set them globally to something
-		" expensive. Apparently 'foldexpr' gets executed even if 'foldenable' is
-		" off, and then for every appended line (like with :put).
-		setlocal foldmethod&
-		setlocal foldexpr&
-
-		let buffer_number = bufwinnr(a:name)
-	endif
-	return buffer_number
-endfunction
-
-" Replace the content of the buffer
-function! ReplaceContent(buffer_number, content) abort
-	" focus on buffer
-	let original_buffer = winnr()
-	if original_buffer == a:buffer_number
-		let in_buffer = 1
-	else
-		let in_buffer = 0
-		call s:winexec(a:buffer_number . 'wincmd w')
-	endif
-
-	let lazyredraw_save = &lazyredraw
-	set lazyredraw
-	let eventignore_save = &eventignore
-	set eventignore=all
-
-	setlocal modifiable
-
-	silent %delete _
-
-	" Delete empty lines at the end of the buffer
-	for linenr in range(line('$'), 1, -1)
-		if getline(linenr) =~ '^$'
-			execute 'silent ' . linenr . 'delete _'
-		else
-			break
-		endif
-	endfor
-
-	" render
-	silent put = a:content
-
-	setlocal nomodifiable
-
-	let &lazyredraw  = lazyredraw_save
-	let &eventignore = eventignore_save
-
-	" return to previous buffer
-	if !in_buffer
-		call s:winexec(original_buffer . 'wincmd w')
-	endif
-endfunction
-
-function! s:winexec(cmd) abort
-	let eventignore_save = &eventignore
-	set eventignore=BufEnter
-	execute a:cmd
-	let &eventignore = eventignore_save
-endfunction
-
-
-" BufOnly from https://github.com/duff/vim-bufonly
-command! -nargs=? -complete=buffer -bang BufOnly :call <SID>BufOnly('<args>', '<bang>')
-function! s:BufOnly(buffer, bang)
-	if a:buffer == ''
-		" No buffer provided, use the current buffer.
-		let buffer = bufnr('%')
-	elseif (a:buffer + 0) > 0
-		" A buffer number was provided.
-		let buffer = bufnr(a:buffer + 0)
-	else
-		" A buffer name was provided.
-		let buffer = bufnr(a:buffer)
-	endif
-
-	if buffer == -1
-		echohl ErrorMsg
-		echomsg "No matching buffer for" a:buffer
-		echohl None
-		return
-	endif
-
-	let last_buffer = bufnr('$')
-
-	let delete_count = 0
-	let n = 1
-	while n <= last_buffer
-		if n != buffer && buflisted(n)
-			if a:bang == '' && getbufvar(n, '&modified')
-				echohl ErrorMsg
-				echomsg 'No write since last change for buffer'
-							\ n '(add ! to override)'
-				echohl None
-			else
-				silent exe 'bdel' . a:bang . ' ' . n
-				if ! buflisted(n)
-					let delete_count = delete_count+1
-				endif
-			endif
-		endif
-		let n = n+1
-	endwhile
-
-	if delete_count == 1
-		echomsg delete_count "buffer deleted"
-	elseif delete_count > 1
-		echomsg delete_count "buffers deleted"
-	endif
-
-endfunction
-
 
 " Vim default diff does not work well
 set diffexpr=MyDiff()
