@@ -304,86 +304,82 @@ command! EVimrc :e $MYVIMRC
 
 " checkout https://github.com/Shougo/dein.vim/
 call plug#begin('$HOME/plugged')
+" Universal Vim Functionality
 Plug 'embear/vim-localvimrc'
 Plug 'duff/vim-bufonly'
-Plug 'fholgado/minibufexpl.vim'
+Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
+Plug 'itchyny/vim-cursorword'
+Plug 'easymotion/vim-easymotion'
+Plug 'haya14busa/incsearch.vim'
+" Programming Related
+Plug 'tpope/vim-surround'
+Plug 'Raimondi/delimitMate'
+Plug 'tomtom/tcomment_vim'
+Plug 'sickill/vim-pasta'
+Plug 'AndrewRadev/sideways.vim'
+Plug 'nathanaelkane/vim-indent-guides', {'on': ['IndentGuidesEnable', 'IndentGuidesToggle']}
 Plug 'ctrlpvim/ctrlp.vim'
+" External Dependency
+Plug 'majutsushi/tagbar'
+Plug 'w0rp/ale'
 Plug 'Shougo/deoplete.nvim'
 Plug 'roxma/nvim-yarp' " required for deoplete
 Plug 'roxma/vim-hug-neovim-rpc' " required for deoplete
-Plug 'tomtom/tcomment_vim'
-Plug 'tpope/vim-surround'
-Plug 'Raimondi/delimitMate'
-Plug 'easymotion/vim-easymotion'
-Plug 'sickill/vim-pasta'
-Plug 'majutsushi/tagbar'
-Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
-Plug 'ap/vim-css-color'
-Plug 'mattn/emmet-vim'
-Plug 'pangloss/vim-javascript'
-Plug 'captbaritone/better-indent-support-for-php-with-html'
-Plug 'nathanaelkane/vim-indent-guides', {'on': ['IndentGuidesEnable', 'IndentGuidesToggle']}
-Plug 'AndrewRadev/sideways.vim'
-Plug 'itchyny/vim-cursorword'
-Plug 'w0rp/ale'
-Plug 'haya14busa/incsearch.vim'
+" GUI
+Plug 'fholgado/minibufexpl.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+" Language
+Plug 'mattn/emmet-vim'
+Plug 'ap/vim-css-color'
+Plug 'pangloss/vim-javascript'
+Plug 'captbaritone/better-indent-support-for-php-with-html'
+
 " Evaluating
 Plug 'wellle/targets.vim'
 " Plug 'python-mode/python-mode', {'for': 'python'}
 " Plug 'sbdchd/neoformat', {'on': ['Neoformat']}
-
 " Plug 'heavenshell/vim-jsdoc.git
 " https://langserver.org/
 " https://github.com/autozimu/LanguageClient-neovim
 call plug#end()
 
-" BufOnly
-nnoremap <c-F4> :BufOnly<cr>
 
-" airline
-let g:airline#extensions#branch#enabled = 0
-let g:airline_detect_paste = 0
-let g:airline_detect_crypt = 0
-let g:airline_extensions = ['quickfix', 'ctrlp', 'whitespace', 'ale']
-let g:airline_theme = 'bubblegum'
-" let g:airline_powerline_fonts = 1
-" set guifont=Hack:h9
-
-" undotree
-cabbrev UT UndotreeToggle
-
-" ale
-let g:ale_sign_column_always = 1
-let g:ale_linters = {'javascript': ['jshint']}
-" let g:ale_lint_on_save = 1
-" let g:ale_lint_on_text_changed = 0
-
-" delimitmate
-let delimitMate_matchpairs = "(:),[:],{:}"
-let delimitMate_expand_cr = 1
-
-" EasyMotion
-let g:EasyMotion_leader_key = '<Leader>'
-let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz'
-
-" Emmet
-let g:user_emmet_leader_key = '<c-y>'
-let g:user_emmet_expandabbr_key = '<c-e>'
-" let g:user_emmet_expandword_key = '<c-e>'
-let g:user_emmet_complete_tag = 1
-
-" Comments
-nmap <leader>c <c-_><c-_>
-vmap <leader>c <c-_><c-_>
-" imap <leader>c <c-o><c-_><c-_>
 
 " localvimrc
 let g:localvimrc_name = '_lvimrc'
 let g:localvimrc_count = 1
 let g:localvimrc_sandbox = 0
 let g:localvimrc_ask = 0
+
+" BufOnly
+nnoremap <c-F4> :BufOnly<cr>
+
+" undotree
+cabbrev UT UndotreeToggle
+
+" EasyMotion
+let g:EasyMotion_leader_key = '<Leader>'
+let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz'
+
+" incsearch
+map /  <plug>(incsearch-forward)
+map ?  <plug>(incsearch-backward)
+
+
+
+" delimitmate
+let delimitMate_matchpairs = "(:),[:],{:}"
+let delimitMate_expand_cr = 1
+
+" tcomment
+nmap <leader>c <c-_><c-_>
+vmap <leader>c <c-_><c-_>
+" imap <leader>c <c-o><c-_><c-_>
+
+" sideways
+noremap <c-h> :SidewaysLeft<cr>
+noremap <c-l> :SidewaysRight<cr>
 
 " ctrlp
 let g:ctrlp_map = '<space>'
@@ -409,6 +405,8 @@ nnoremap gb :CtrlPBuffer<cr>
 nnoremap g/ :CtrlPLine<cr>
 " let g:ctrlp_user_command = 'rg %s --files --color=never'
 
+
+
 " Tagbar
 cabbrev TT TagbarToggle
 let g:tagbar_sort = 0
@@ -423,6 +421,12 @@ let g:tagbar_type_php  = {
 	\ ]
 \ }
 
+" ale
+let g:ale_sign_column_always = 1
+let g:ale_linters = {'javascript': ['jshint']}
+" let g:ale_lint_on_save = 1
+" let g:ale_lint_on_text_changed = 0
+
 " deoplete
 inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
 inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<s-tab>'
@@ -435,6 +439,8 @@ if !exists('g:deoplete#delimiter_patterns')
 	let g:deoplete#delimiter_patterns= {}
 endif
 let g:deoplete#delimiter_patterns.php = ['\', '::', '->']
+
+
 
 " MiniBufExpl
 nnoremap <tab> :MBEbn<cr>
@@ -457,15 +463,22 @@ let g:miniBufExplCycleArround = 1
 " hi MBEVisibleActiveNormal gui=bold
 " hi MBEVisibleActiveChanged gui=bold,italic
 
+" airline
+let g:airline#extensions#branch#enabled = 0
+let g:airline_detect_paste = 0
+let g:airline_detect_crypt = 0
+let g:airline_extensions = ['quickfix', 'ctrlp', 'whitespace', 'ale']
+let g:airline_theme = 'bubblegum'
+" let g:airline_powerline_fonts = 1
+" set guifont=Hack:h9
 
-" incsearch
-map /  <plug>(incsearch-forward)
-map ?  <plug>(incsearch-backward)
 
 
-" sideways
-noremap <c-h> :SidewaysLeft<cr>
-noremap <c-l> :SidewaysRight<cr>
+" Emmet
+let g:user_emmet_leader_key = '<c-y>'
+let g:user_emmet_expandabbr_key = '<c-e>'
+" let g:user_emmet_expandword_key = '<c-e>'
+let g:user_emmet_complete_tag = 1
 
 
 
