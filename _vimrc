@@ -302,10 +302,10 @@ command! EVimrc :e $MYVIMRC
 " Plugins
 " ----- ----- ----- -----
 
-" checkout https://github.com/Shougo/dein.vim/
+" https://github.com/BurntSushi/ripgrep/releases
 call plug#begin('$HOME/plugged')
 " Universal Vim Functionality
-Plug 'embear/vim-localvimrc'
+" Plug 'embear/vim-localvimrc'
 Plug 'duff/vim-bufonly'
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'itchyny/vim-cursorword'
@@ -318,11 +318,11 @@ Plug 'tomtom/tcomment_vim'
 Plug 'sickill/vim-pasta'
 Plug 'AndrewRadev/sideways.vim'
 Plug 'nathanaelkane/vim-indent-guides', {'on': ['IndentGuidesEnable', 'IndentGuidesToggle']}
-Plug 'ctrlpvim/ctrlp.vim'
 " External Dependency
-Plug 'majutsushi/tagbar'
-Plug 'w0rp/ale'
-Plug 'Shougo/deoplete.nvim'
+Plug 'ctrlpvim/ctrlp.vim' " https://github.com/BurntSushi/ripgrep/releases
+Plug 'majutsushi/tagbar' " https://github.com/universal-ctags/ctags-win32/releases
+" Plug 'w0rp/ale'
+Plug 'Shougo/deoplete.nvim' " python, pip3 install neovim
 Plug 'roxma/nvim-yarp' " required for deoplete
 Plug 'roxma/vim-hug-neovim-rpc' " required for deoplete
 " GUI
@@ -340,9 +340,55 @@ Plug 'wellle/targets.vim'
 " Plug 'python-mode/python-mode', {'for': 'python'}
 " Plug 'sbdchd/neoformat', {'on': ['Neoformat']}
 " Plug 'heavenshell/vim-jsdoc.git
-" https://langserver.org/
-" https://github.com/autozimu/LanguageClient-neovim
+
+" Plug 'prabirshrestha/async.vim'
+" Plug 'prabirshrestha/vim-lsp'
+" Plug 'prabirshrestha/asyncomplete.vim'
+" Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'autozimu/LanguageClient-neovim', {
+	\ 'branch': 'next',
+	\ 'do': 'powershell -executionpolicy bypass -File install.ps1',
+	\ }
+" Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
 call plug#end()
+
+
+
+" LSP http://langserver.org/
+let g:ale_enabled = 0
+let g:LanguageClient_windowLogMessageLevel = "Log"
+let g:LanguageClient_loggingLevel = 'DEBUG'
+" must be full path
+let g:LanguageClient_serverCommands = {
+	\ 'javascript': ['C:/Users/Dalton/AppData/Roaming/npm/javascript-typescript-stdio.cmd'],
+	\ 'html': ['C:/Users/Dalton/AppData/Roaming/npm/html-languageserver.cmd', '--stdio'],
+	\ 'css': ['C:/Users/Dalton/AppData/Roaming/npm/css-languageserver.cmd', '--stdio'],
+	\ 'scss': ['C:/Users/Dalton/AppData/Roaming/npm/css-languageserver.cmd', '--stdio'],
+	\ 'python': ['C:/Python/36/Scripts/pyls.exe'],
+	\ }
+	" \ 'php': ['D:/Vim/home/plugged/LanguageClient-neovim/wrapper-server.cmd'],
+	" \ 'php': ['C:/php-7.0.27/php.exe', 'D:/Vim/home/language-servers/php/bin/php-language-server.php'],
+autocmd FileType javascript,html,css,scss,python nnoremap <buffer> <silent> K :call LanguageClient_textDocument_hover()<CR>
+autocmd FileType javascript,html,css,scss,python nnoremap <buffer> <silent> gd :call LanguageClient_textDocument_definition()<CR>
+autocmd FileType javascript,html,css,scss,python nnoremap <buffer> <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+autocmd FileType javascript,html,css,scss,python nnoremap <buffer> <silent> <leader>= :call LanguageClient_textDocument_formatting()<cr>
+" npm install -g javascript-typescript-langserver vscode-html-languageserver-bin vscode-css-languageserver-bin
+" pip install python-language-server
+
+" disable ALE to prevent lag
+" let g:ale_enabled = 0
+" autocmd FileType javascript setlocal omnifunc=lsp#complete
+" let g:lsp_async_completion = 1
+" if executable('typescript-language-server')
+" 	au User lsp_setup call lsp#register_server({
+" 	  \ 'name': 'typescript-language-server',
+" 	  \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+" 	  \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
+" 	  \ 'whitelist': ['typescript', 'javascript', 'javascript.jsx']
+" 	  \ })
+" endif
+" let g:lsp_signs_enabled = 1         " enable signs
+" let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
 
 
 
@@ -403,6 +449,7 @@ nnoremap gt :CtrlPBufTag<cr>
 nnoremap gT :CtrlPBufTagAll<cr>
 nnoremap gb :CtrlPBuffer<cr>
 nnoremap g/ :CtrlPLine<cr>
+nnoremap gm :CtrlPMRU<cr>
 " let g:ctrlp_user_command = 'rg %s --files --color=never'
 
 
