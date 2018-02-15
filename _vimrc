@@ -147,11 +147,6 @@ set statusline+=%= " right align from here
 set statusline+=%c,\ %l\ \|\ %P\ of\ %L\ " cursor column, line/total percent
 set statusline+=\ [%{strlen(&fenc)?&fenc:'none'},\ %{&ff}]\  " encoding, format
 
-" Make the cursor look nicer
-set guicursor+=v:hor50
-set guicursor+=i:ver1
-set guicursor+=a:blinkwait750-blinkon750-blinkoff250
-
 " Line number
 set numberwidth=5
 set relativenumber
@@ -159,13 +154,19 @@ set number
 
 set colorcolumn=80,120 " set ruler to show at column 80 and 120
 set cursorline " highlight current line
-set guioptions=erR " tabs & right scollbar. No menu, toolbar and bottom scollbar
-set guitablabel=%-0.12t%M " format of tab label
 set previewheight=8 " smaller preview window
 set ruler " show the cursor position all the time
 set scrolloff=1 " keep padding around cursor
 set showcmd " display incomplete commands
 set showtabline=1 " show tabs only if there are more than one
+
+" gVim
+" Make the cursor look nicer
+set guicursor+=v:hor50
+set guicursor+=i:ver1
+set guicursor+=a:blinkwait750-blinkon750-blinkoff250
+set guioptions=erR " tabs & right scollbar. No menu, toolbar and bottom scollbar
+set guitablabel=%-0.12t%M " format of tab label
 
 
 " ----- ----- ----- -----
@@ -321,7 +322,7 @@ Plug 'nathanaelkane/vim-indent-guides', {'on': ['IndentGuidesEnable', 'IndentGui
 " External Dependency
 Plug 'ctrlpvim/ctrlp.vim' " https://github.com/BurntSushi/ripgrep/releases
 Plug 'majutsushi/tagbar' " https://github.com/universal-ctags/ctags-win32/releases
-" Plug 'w0rp/ale'
+Plug 'w0rp/ale', {'for': 'php'}
 Plug 'Shougo/deoplete.nvim' " python, pip3 install neovim
 Plug 'roxma/nvim-yarp' " required for deoplete
 Plug 'roxma/vim-hug-neovim-rpc' " required for deoplete
@@ -337,25 +338,22 @@ Plug 'captbaritone/better-indent-support-for-php-with-html'
 
 " Evaluating
 Plug 'wellle/targets.vim'
-" Plug 'python-mode/python-mode', {'for': 'python'}
-" Plug 'sbdchd/neoformat', {'on': ['Neoformat']}
 " Plug 'heavenshell/vim-jsdoc.git
 
-" Plug 'prabirshrestha/async.vim'
-" Plug 'prabirshrestha/vim-lsp'
-" Plug 'prabirshrestha/asyncomplete.vim'
-" Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'autozimu/LanguageClient-neovim', {
 	\ 'branch': 'next',
 	\ 'do': 'powershell -executionpolicy bypass -File install.ps1',
 	\ }
-" Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
+" Plug 'padawan-php/padawan.vim'
+" Plug 'padawan-php/deoplete-padawan'
+Plug 'adoy/vim-php-refactoring-toolbox'
+" Plug 'stephpy/vim-php-cs-fixer'
+" Plug 'phpactor/phpactor'
 call plug#end()
 
 
 
 " LSP http://langserver.org/
-let g:ale_enabled = 0
 let g:LanguageClient_windowLogMessageLevel = "Log"
 let g:LanguageClient_loggingLevel = 'DEBUG'
 " must be full path
@@ -375,20 +373,12 @@ autocmd FileType javascript,html,css,scss,python nnoremap <buffer> <silent> <lea
 " npm install -g javascript-typescript-langserver vscode-html-languageserver-bin vscode-css-languageserver-bin
 " pip install python-language-server
 
-" disable ALE to prevent lag
-" let g:ale_enabled = 0
-" autocmd FileType javascript setlocal omnifunc=lsp#complete
-" let g:lsp_async_completion = 1
-" if executable('typescript-language-server')
-" 	au User lsp_setup call lsp#register_server({
-" 	  \ 'name': 'typescript-language-server',
-" 	  \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-" 	  \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
-" 	  \ 'whitelist': ['typescript', 'javascript', 'javascript.jsx']
-" 	  \ })
-" endif
-" let g:lsp_signs_enabled = 1         " enable signs
-" let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
+" PHP Refactoring Toolbox
+let g:vim_php_refactoring_use_default_mapping = 0
+nnoremap <unique> <Leader>rv :call PhpRenameLocalVariable()<CR>
+nnoremap <unique> <Leader>rp :call PhpExtractClassProperty()<CR>
+nnoremap <unique> <Leader>ru :call PhpExtractUse()<CR>
+nnoremap <unique> <Leader>ruu :call PhpDetectUnusedUseStatements()<CR>
 
 
 
@@ -450,6 +440,8 @@ nnoremap gT :CtrlPBufTagAll<cr>
 nnoremap gb :CtrlPBuffer<cr>
 nnoremap g/ :CtrlPLine<cr>
 nnoremap gm :CtrlPMRU<cr>
+" use exuberant ctags because universal ctags isn't supported
+let g:ctrlp_buftag_ctags_bin = 'ectags.exe'
 " let g:ctrlp_user_command = 'rg %s --files --color=never'
 
 
@@ -468,12 +460,6 @@ let g:tagbar_type_php  = {
 	\ ]
 \ }
 
-" ale
-let g:ale_sign_column_always = 1
-let g:ale_linters = {'javascript': ['jshint']}
-" let g:ale_lint_on_save = 1
-" let g:ale_lint_on_text_changed = 0
-
 " deoplete
 inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
 inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<s-tab>'
@@ -486,6 +472,9 @@ if !exists('g:deoplete#delimiter_patterns')
 	let g:deoplete#delimiter_patterns= {}
 endif
 let g:deoplete#delimiter_patterns.php = ['\', '::', '->']
+
+" ale
+let g:ale_sign_column_always = 1
 
 
 
