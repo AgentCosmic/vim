@@ -1,0 +1,21 @@
+{
+	"coc.preferences.echodocSupport": true,
+	"coc.preferences.formatOnSaveFiletypes": [
+		"go"
+	],
+	"coc.preferences.diagnostic.enable": false,
+	"coc.preferences.diagnostic.displayByAle": true,
+	"languageserver": {
+		"golang": {
+			"command": "go-langserver",
+			"filetypes": [
+				"go"
+			],
+			"initializationOptions": {
+				"gocodeCompletionEnabled": true,
+				"diagnosticsEnabled": true,
+				"lintTool": "golint"
+			}
+		}
+	}
+}
