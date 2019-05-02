@@ -59,7 +59,7 @@ augroup vimrcBehavior
 	" autocmd BufNewFile,BufRead *.less setlocal filetype=css
 
 	" Remove trailing space before saving
-	autocmd BufWritePre *.css,*.htm,*.html,*.js,*.php,*.py :%s/\s\+$//e
+	autocmd BufWritePre *.css,*.htm,*.html,*.js,*.php,*.py,*.vue :%s/\s\+$//e
 
 	" Delete empty buffers, specially for files opened with --remote option
 	" autocmd BufAdd * nested :call <SID>DeleteBufferIfEmpty()
@@ -152,6 +152,7 @@ set numberwidth=5
 set relativenumber
 set number
 
+set signcolumn=yes " always show signcolumns
 set colorcolumn=80,120 " set ruler to show at column 80 and 120
 set cursorline " highlight current line
 set previewheight=8 " smaller preview window
@@ -300,6 +301,7 @@ noremap <F1> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> tr
 command! CdToFile cd %:p:h
 command! DeleteControlM %s/$//
 command! EVimrc :e $MYVIMRC
+command! SS :syntax sync fromstart
 
 " edit a macro using cq(macro name)
 fun! ChangeReg() abort
@@ -313,7 +315,6 @@ nnoremap cq :call ChangeReg()<cr>
 " Plugins
 " ----- ----- ----- -----
 
-" https://github.com/BurntSushi/ripgrep/releases
 call plug#begin('$HOME/plugged')
 " Universal Vim Functionality
 " Plug 'embear/vim-localvimrc'
@@ -321,22 +322,20 @@ Plug 'duff/vim-bufonly'
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'itchyny/vim-cursorword'
 Plug 'easymotion/vim-easymotion'
-" Plug 'haya14busa/incsearch.vim'
 " Programming Related
 Plug 'tpope/vim-surround'
-" Plug 'Raimondi/delimitMate'
+Plug 'jiangmiao/auto-pairs'
 Plug 'tomtom/tcomment_vim'
 Plug 'sickill/vim-pasta'
 Plug 'AndrewRadev/sideways.vim'
 Plug 'wellle/targets.vim'
 Plug 'nathanaelkane/vim-indent-guides', {'on': ['IndentGuidesEnable', 'IndentGuidesToggle']}
+Plug 'Shougo/echodoc.vim' " used by coc
 " External Dependency
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}} " install yarn first
 Plug 'ctrlpvim/ctrlp.vim' " https://github.com/BurntSushi/ripgrep/releases
 Plug 'majutsushi/tagbar', { 'on': ['Tagbar', 'TagbarToggle', 'TagbarOpen'] } " https://github.com/universal-ctags/ctags-win32/releases
 Plug 'w0rp/ale'
-" Plug 'Shougo/deoplete.nvim' " python, pip3 install neovim
-" Plug 'roxma/nvim-yarp' " required for deoplete
-" Plug 'roxma/vim-hug-neovim-rpc' " required for deoplete
 " GUI
 Plug 'fholgado/minibufexpl.vim'
 Plug 'vim-airline/vim-airline'
@@ -346,38 +345,24 @@ Plug 'mattn/emmet-vim'
 Plug 'ap/vim-css-color'
 Plug 'pangloss/vim-javascript'
 Plug 'captbaritone/better-indent-support-for-php-with-html'
+Plug 'pearofducks/ansible-vim'
+Plug 'posva/vim-vue', { 'for': 'vue' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & npm install', 'on': 'MarkdownPreview' }
 
 " Evaluating
 Plug 'unblevable/quick-scope'
 Plug 'tommcdo/vim-exchange'
 Plug 'leafgarland/typescript-vim'
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}} " install yarn first
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'jiangmiao/auto-pairs'
+Plug 'alvan/vim-closetag'
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " Plug 'KabbAmine/zeavim.vim'
 " Plug 'dyng/ctrlsf.vim'
 " Plug 'heavenshell/vim-jsdoc.git'
 " Plug 'jbgutierrez/vim-better-comments'
-Plug 'pearofducks/ansible-vim'
-Plug 'posva/vim-vue', { 'for': 'vue' }
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & npm install', 'on': 'MarkdownPreview' }
-Plug 'alvan/vim-closetag'
 
-" Plug 'autozimu/LanguageClient-neovim', {
-" 	\ 'branch': 'next',
-" 	\ 'do': 'powershell -executionpolicy bypass -File install.ps1',
-" 	\ }
-Plug 'Shougo/echodoc.vim'
-" Plug 'padawan-php/padawan.vim'
-" Plug 'padawan-php/deoplete-padawan'
-" Plug 'adoy/vim-php-refactoring-toolbox'
-" Plug 'stephpy/vim-php-cs-fixer'
-" Plug 'phpactor/phpactor'
 call plug#end()
-
-let g:vue_disable_pre_processors=1
 
 " Zeavim
 " nmap <leader>z <Plug>Zeavim
@@ -389,118 +374,11 @@ let g:qs_max_chars = 160
 highlight QuickScopePrimary guifg='#f1ede4' gui=underline
 highlight QuickScopeSecondary guifg='#94918a' gui=underline
 
-" coc
-" Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=500
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-" always show signcolumns
-set signcolumn=yes
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-			\ pumvisible() ? "\<C-n>" :
-			\ <SID>check_back_space() ? "\<TAB>" :
-			\ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-function! s:check_back_space() abort
-	let col = col('.') - 1
-	return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-" Use <c-space> for trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-" Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" Use `[c` and `]c` for navigate diagnostics
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-" Use K for show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-function! s:show_documentation()
-	if &filetype == 'vim'
-		execute 'h '.expand('<cword>')
-	else
-		call CocAction('doHover')
-	endif
-endfunction
-" Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
-" Remap for rename current word
-nmap <leader>r <Plug>(coc-rename)
-" Remap for format selected region
-nmap g= :call CocAction('format')<cr>
-augroup CocGroup
-	autocmd!
-	" Setup formatexpr specified filetype(s).
-	autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-	" Update signature help on jump placeholder
-	autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-vmap ga <Plug>(coc-codeaction-selected)
-nmap ga <Plug>(coc-codeaction-selected)
-" Remap for do codeAction of current line
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Fix autofix problem of current line
-nmap <leader>qf  <Plug>(coc-fix-current)
-" Use `:Format` for format current buffer
-command! -nargs=0 Format :call CocAction('format')
-" Close preview window when completion is done.
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
-
 " ultisnips
 let g:UltiSnipsExpandTrigger = '<leader><tab>'
-" let g:UltiSnipsJumpForwardTrigger='<c-n>'
-" let g:UltiSnipsJumpBackwardTrigger='<c-m>'
 
-" LSP http://langserver.org/
-" let g:LanguageClient_autoStart = 1
-" let g:LanguageClient_autoStop = 1
-" " must be full path
-" let g:LanguageClient_serverCommands = {
-" 	\ 'javascript': ['C:/Users/Dalton/AppData/Roaming/npm/javascript-typescript-stdio.cmd'],
-" 	\ 'html': ['C:/Users/Dalton/AppData/Roaming/npm/html-languageserver.cmd', '--stdio'],
-" 	\ 'css': ['C:/Users/Dalton/AppData/Roaming/npm/css-languageserver.cmd', '--stdio'],
-" 	\ 'scss': ['C:/Users/Dalton/AppData/Roaming/npm/css-languageserver.cmd', '--stdio'],
-" 	\ 'python': ['C:/Python/36/Scripts/pyls'],
-" 	\ }
-" 	" \ 'php': ['D:/Vim/home/plugged/LanguageClient-neovim/wrapper-server.cmd'],
-" 	" \ 'php': ['C:/php-7.0.27/php.exe', 'D:/Vim/home/language-servers/php/bin/php-language-server.php'],
-" " npm install -g javascript-typescript-langserver vscode-html-languageserver-bin vscode-css-languageserver-bin
-" " pip install python-language-server rope pyflakes pycodestyle yapf pyls-mypy
-" nnoremap <leader>ls :call LanguageClient_contextMenu()<CR>
-" function SetLSPShortcuts()
-" 	nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<CR>
-" 	nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_definition()<CR>
-" 	nnoremap <buffer> <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-" 	nnoremap <buffer> <silent> <leader>= :call LanguageClient#textDocument_formatting()<CR>
-" endfunction()
-" augroup LSP
-"   autocmd!
-"   autocmd FileType javascript,html,css,scss,python call SetLSPShortcuts()
-" augroup END
-" call deoplete#custom#source('LanguageClient', 'min_pattern_length', 2)
-"
-" " echodoc
-" set cmdheight=2
-" let g:echodoc#enable_at_startup = 1
-" let g:echodoc#type = 'signature'
 
-" PHP Refactoring Toolbox
-" let g:vim_php_refactoring_use_default_mapping = 0
-" nnoremap <Leader>rv :call PhpRenameLocalVariable()<CR>
-" nnoremap <Leader>rp :call PhpExtractClassProperty()<CR>
-" nnoremap <Leader>ru :call PhpExtractUse()<CR>
-" nnoremap <Leader>ruu :call PhpDetectUnusedUseStatements()<CR>
-
+" -----------------------------------------------------------------------------
 
 
 " localvimrc
@@ -518,16 +396,6 @@ cabbrev UT UndotreeToggle
 " EasyMotion
 let g:EasyMotion_leader_key = '<Leader>'
 let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz'
-
-" incsearch
-" map /  <plug>(incsearch-forward)
-" map ?  <plug>(incsearch-backward)
-
-
-
-" delimitmate
-" let delimitMate_matchpairs = "(:),[:],{:}"
-" let delimitMate_expand_cr = 1
 
 " vim-closetag
 let g:closetag_filetypes = 'html,php,vue'
@@ -552,7 +420,7 @@ let g:ctrlp_custom_ignore = {
 			\ 'file': '\v[\/](.+\.min\.(css|js))$'
 			\ }
 let g:user_command_async = 1
-let g:ctrlp_search_options = '-g "!*.jpg" -g "!*.png" -g "!*.gif" -g "!*.psd" -g "!*.ai" -g "!node_modules"' " search options for ripgrep to reuse in other vimrc
+let g:ctrlp_search_options = '-g "!*.jpg" -g "!*.png" -g "!*.gif" -g "!*.psd" -g "!*.ai" -g "!node_modules" -g "!__pycache__" -g "!venv"' " search options for ripgrep to reuse in other vimrc
 let g:ctrlp_user_command = {
 			\ 'types': {
 				\ 1: ['.git', 'cd %s && git ls-files | rg --files --color=never ' . g:ctrlp_search_options],
@@ -566,7 +434,78 @@ nnoremap g/ :CtrlPLine<cr>
 nnoremap gm :CtrlPMRU<cr>
 " use exuberant ctags because universal ctags isn't supported
 let g:ctrlp_buftag_ctags_bin = 'ectags.exe'
+" gotags doesn't work now
+let g:ctrlp_buftag_types = {
+\ 'go'         : '--language-force=go --golang-types=ftv',
+\ }
 " let g:ctrlp_user_command = 'rg %s --files --color=never'
+
+
+
+" echodoc
+set cmdheight=2
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'signature'
+
+
+
+" coc
+" Smaller updatetime for CursorHold & CursorHoldI
+set updatetime=500
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+			\ pumvisible() ? "\<C-n>" :
+			\ <SID>check_back_space() ? "\<TAB>" :
+			\ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+function! s:check_back_space() abort
+	let col = col('.') - 1
+	return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+" Use <c-space> for trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+" Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+" Use K for show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+	if &filetype == 'vim'
+		execute 'h '.expand('<cword>')
+	else
+		call CocAction('doHover')
+	endif
+endfunction
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+" Remap for rename current word
+nmap <leader>r <Plug>(coc-rename)
+" Remap for format selected region
+nmap g= :call CocAction('format')<cr>
+augroup CocGroup
+	autocmd!
+	" Setup formatexpr specified filetype(s).
+	autocmd FileType typescript,json,vue setl formatexpr=CocAction('formatSelected')
+	" Update signature help on jump placeholder
+	autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+vmap ga <Plug>(coc-codeaction-selected)
+nmap ga <Plug>(coc-codeaction-selected)
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+" Close preview window when completion is done.
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 
 
@@ -612,39 +551,27 @@ let g:tagbar_type_go = {
 	\ 'ctagsargs' : '-sort -silent'
 \ }
 
-" deoplete
-" inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
-" inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<s-tab>'
-" let g:python3_host_prog = 'C:/Python/36/python'
-" let g:deoplete#enable_at_startup = 1
-" let g:deoplete#auto_completion_start_length = 1
-" let g:deoplete#min_keyword_length = 3
-" let g:deoplete#sources#syntax#min_keyword_length = 3
-" if !exists('g:deoplete#delimiter_patterns')
-" 	let g:deoplete#delimiter_patterns= {}
-" endif
-" let g:deoplete#delimiter_patterns.php = ['\', '::', '->']
-
 " ale
 let g:ale_sign_column_always = 1
 let g:ale_completion_enabled = 0
+let g:ale_open_list = 'on_save' " auto open and close location list on save
+let g:ale_list_window_size = 5
 " let g:ale_fix_on_save = 1
 let g:ale_fixers = {
 	\ 'javascript': ['eslint'],
-	\ 'python': ['pyls', 'flake8', 'mypy', 'remove_trailing_lines'],
+	\ 'python': ['isort'],
 \}
-" \ 'python': ['black', 'isort'],
 let g:ale_linters = {
 	\ 'javascript': ['tsserver'],
-	\ 'python': ['flake8', 'mypy', 'remove_trailing_lines'],
-	\ 'css': ['stylelint']
+	\ 'css': ['stylelint'],
+	\ 'python': ['mypy'],
 \}
 let g:ale_python_pyls_executable = 'C:/Python36/Scripts/pyls'
 function! SetALEShortcuts()
 	" nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<CR>
 	" nnoremap <buffer> <silent> gd :ALEGoToDefinition<CR>
 	nnoremap <buffer> <silent> gf :ALEFix<CR>
-	nnoremap <buffer> <silent> <f3> :ALEFindReferences<CR>
+	" nnoremap <buffer> <silent> <f3> :ALEFindReferences<CR>
 	nnoremap <buffer> <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 	" nnoremap <buffer> <silent> <leader>= :call LanguageClient#textDocument_formatting()<CR>
 endfunction()
@@ -686,6 +613,11 @@ let g:airline_extensions = ['quickfix', 'ctrlp', 'whitespace', 'ale']
 let g:airline_theme = 'bubblegum'
 " let g:airline_powerline_fonts = 1
 " set guifont=Hack:h9
+
+
+
+" vue
+let g:vue_disable_pre_processors=1
 
 
 
