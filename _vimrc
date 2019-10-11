@@ -2,11 +2,11 @@
 "This must be first, because it changes other options as a side effect.
 set nocompatible
 
+" Change home directory
+let $USER = $VIM . '/home'
+
 source $VIMRUNTIME/mswin.vim
 behave mswin
-
-" Change home directory
-let $HOME = $VIM . '/home'
 
 " ----- ----- ----- -----
 " Behavior
@@ -38,10 +38,10 @@ set showcmd " display incomplete commands
 set nobackup
 set writebackup
 " Use custom swap file location
-set directory=$HOME/swap//,.
+set directory=$USER/.cache/swap//,.
 " Use persistent undo
 set undofile
-set undodir=$HOME/undo//,.
+set undodir=$USER/.cache/undo//,.
 
 " Line number
 set numberwidth=5
@@ -166,9 +166,6 @@ set nofoldenable " disable by default
 " Remapping
 " ----- ----- ----- -----
 
-" Reset <c-f> mapping to original (scroll down) that was overridden in mswin.vim
-unmap <c-f>
-
 " Re-select after copying
 vnoremap <c-c> "+ygv
 
@@ -278,8 +275,18 @@ nnoremap cq :call ChangeReg()<cr>
 
 
 " ----- ----- ----- -----
+" TUI
+" ----- ----- ----- -----
+
+set background=dark
+colorscheme	comfort
+syntax on
+set hlsearch
+
+
+" ----- ----- ----- -----
 " Others
 " ----- ----- ----- -----
 
-source plugins.vim
-source gvim.vim
+source $VIM/plugins.vim
+source $VIM/gvim.vim

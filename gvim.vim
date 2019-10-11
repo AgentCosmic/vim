@@ -5,19 +5,12 @@ if has('gui_running')
 else
 	set t_Co=256
 	set background=dark
-	colorscheme solarized
+	colorscheme desert
 endif
 
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
 	set mouse=a
-endif
-
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-if &t_Co > 2 || has("gui_running")
-	syntax on
-	set hlsearch
 endif
 
 augroup vimrcGui
@@ -26,7 +19,8 @@ augroup vimrcGui
 	autocmd GUIEnter * simalt ~x
 augroup END
 
-set showtabline=1 " show tabs only if there are more than one
+" show tabs only if there are more than one
+set showtabline=1
 
 " Make the cursor look nicer
 set guicursor+=v:hor50
@@ -35,3 +29,5 @@ set guicursor+=a:blinkwait750-blinkon750-blinkoff250
 set guioptions=erR " tabs & right scollbar. No menu, toolbar and bottom scollbar
 set guitablabel=%-0.12t%M " format of tab label
 
+" Reset <c-f> mapping to original (scroll down) that was overridden in mswin.vim
+unmap <c-f>

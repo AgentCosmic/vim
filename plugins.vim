@@ -1,11 +1,11 @@
-call plug#begin('$HOME/plugged')
+call plug#begin('$USER/plugged')
 " Universal Vim Functionality
-" Plug 'embear/vim-localvimrc'
 Plug 'duff/vim-bufonly'
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'itchyny/vim-cursorword'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-abolish'
+Plug 'dyng/ctrlsf.vim'
 " Programming Related
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
@@ -22,8 +22,6 @@ Plug 'majutsushi/tagbar', { 'on': ['Tagbar', 'TagbarToggle', 'TagbarOpen'] } " h
 Plug 'w0rp/ale'
 " GUI
 Plug 'fholgado/minibufexpl.vim'
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
 " Language
 Plug 'mattn/emmet-vim'
 Plug 'ap/vim-css-color'
@@ -33,12 +31,10 @@ Plug 'captbaritone/better-indent-support-for-php-with-html'
 Plug 'pearofducks/ansible-vim'
 Plug 'posva/vim-vue', { 'for': 'vue' }
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install', 'on': 'MarkdownPreview' }
-Plug 'dyng/ctrlsf.vim'
 
 " Evaluating
 Plug 'unblevable/quick-scope'
 Plug 'tommcdo/vim-exchange'
-Plug 'leafgarland/typescript-vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
@@ -69,12 +65,6 @@ let g:UltiSnipsExpandTrigger = '<leader><tab>'
 " -----------------------------------------------------------------------------
 
 
-" localvimrc
-let g:localvimrc_name = '_lvimrc'
-let g:localvimrc_count = 1
-let g:localvimrc_sandbox = 0
-let g:localvimrc_ask = 0
-
 " BufOnly
 nnoremap <c-F4> :BufOnly<cr>
 
@@ -96,6 +86,9 @@ vmap <leader>c <c-_><c-_>
 " sideways
 noremap <c-h> :SidewaysLeft<cr>
 noremap <c-l> :SidewaysRight<cr>
+
+" CtrlSF
+let g:ctrlsf_ackprg = 'rg'
 
 " ctrlp
 let g:ctrlp_map = '<space>'
@@ -127,11 +120,6 @@ let g:ctrlp_buftag_types = {
 \ 'go'         : '--language-force=go --golang-types=ftv',
 \ }
 " let g:ctrlp_user_command = 'rg %s --files --color=never'
-
-
-
-" CtrlSF
-let g:ctrlsf_ackprg = 'rg'
 
 
 
@@ -302,15 +290,6 @@ let g:miniBufExplCycleArround = 1
 " hi MBEVisibleActiveNormal gui=bold
 " hi MBEVisibleActiveChanged gui=bold,italic
 
-" airline
-" let g:airline#extensions#branch#enabled = 0
-" let g:airline_detect_paste = 0
-" let g:airline_detect_crypt = 0
-" let g:airline_extensions = ['quickfix', 'ctrlp', 'whitespace', 'ale']
-" let g:airline_theme = 'bubblegum'
-" let g:airline_powerline_fonts = 1
-" set guifont=Hack:h9
-
 
 
 " Vim Go
@@ -330,4 +309,3 @@ let g:vue_disable_pre_processors=1
 let g:user_emmet_leader_key = '<c-y>'
 let g:user_emmet_expandabbr_key = '<c-e>'
 " let g:user_emmet_expandword_key = '<c-e>'
-let g:user_emmet_complete_tag = 1
