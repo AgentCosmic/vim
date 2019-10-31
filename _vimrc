@@ -3,7 +3,8 @@
 set nocompatible
 
 " Change home directory
-let $USER = $VIM . '/home'
+let $ROOT = $VIM
+let $HOME = $ROOT . '/home'
 
 source $VIMRUNTIME/mswin.vim
 behave mswin
@@ -38,10 +39,10 @@ set showcmd " display incomplete commands
 set nobackup
 set writebackup
 " Use custom swap file location
-set directory=$USER/.cache/swap//,.
+set directory=$HOME/.cache/swap//,.
 " Use persistent undo
 set undofile
-set undodir=$USER/.cache/undo//,.
+set undodir=$HOME/.cache/undo//,.
 
 " Line number
 set numberwidth=5
@@ -275,18 +276,27 @@ nnoremap cq :call ChangeReg()<cr>
 
 
 " ----- ----- ----- -----
-" TUI
+" TUI/GUI
 " ----- ----- ----- -----
 
 set background=dark
 colorscheme	comfort
 syntax on
 set hlsearch
+" In many terminal emulators the mouse works just fine, thus enable it.
+if has('mouse')
+	set mouse=a
+endif
+
+" Make the cursor look nicer
+set guicursor+=v:hor50
+set guicursor+=a:blinkwait750-blinkon750-blinkoff250
 
 
 " ----- ----- ----- -----
 " Others
 " ----- ----- ----- -----
 
-source $VIM/plugins.vim
-source $VIM/gvim.vim
+command! EPlugin :e $ROOT/plugins.vim
+source $ROOT/plugins.vim
+source $ROOT/gvim.vim

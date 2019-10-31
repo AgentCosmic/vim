@@ -1,4 +1,4 @@
-call plug#begin('$USER/plugged')
+call plug#begin('$HOME/plugged')
 " Universal Vim Functionality
 Plug 'duff/vim-bufonly'
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
@@ -16,12 +16,10 @@ Plug 'wellle/targets.vim'
 Plug 'nathanaelkane/vim-indent-guides', {'on': ['IndentGuidesEnable', 'IndentGuidesToggle']}
 Plug 'Shougo/echodoc.vim' " used by coc
 " External Dependency
-Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': { -> coc#util#install() } } " install yarn first
+Plug 'neoclide/coc.nvim', { 'branch': 'release' } " install yarn first
 Plug 'ctrlpvim/ctrlp.vim' " https://github.com/BurntSushi/ripgrep/releases
 Plug 'majutsushi/tagbar', { 'on': ['Tagbar', 'TagbarToggle', 'TagbarOpen'] } " https://github.com/universal-ctags/ctags-win32/releases
-Plug 'w0rp/ale'
-" GUI
-Plug 'fholgado/minibufexpl.vim'
+" Plug 'w0rp/ale'
 " Language
 Plug 'mattn/emmet-vim'
 Plug 'ap/vim-css-color'
@@ -31,6 +29,8 @@ Plug 'captbaritone/better-indent-support-for-php-with-html'
 Plug 'pearofducks/ansible-vim'
 Plug 'posva/vim-vue', { 'for': 'vue' }
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install', 'on': 'MarkdownPreview' }
+" GUI
+Plug 'fholgado/minibufexpl.vim'
 
 " Evaluating
 Plug 'unblevable/quick-scope'
@@ -38,9 +38,6 @@ Plug 'tommcdo/vim-exchange'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
-" Plug 'Shougo/deoplete.nvim'
-" Plug 'roxma/nvim-yarp'
-" Plug 'roxma/vim-hug-neovim-rpc'
 " Plug 'KabbAmine/zeavim.vim'
 " Plug 'heavenshell/vim-jsdoc.git'
 " Plug 'jbgutierrez/vim-better-comments'
@@ -108,17 +105,10 @@ let g:ctrlp_user_command = {
 			\ },
 			\ 'fallback': 'rg %s --files --color=never ' . g:ctrlp_search_options
 			\ }
-nnoremap gt :CtrlPBufTag<cr>
-nnoremap gT :CtrlPBufTagAll<cr>
 nnoremap gb :CtrlPBuffer<cr>
 nnoremap g/ :CtrlPLine<cr>
 nnoremap gm :CtrlPMRU<cr>
-" use exuberant ctags because universal ctags isn't supported
-let g:ctrlp_buftag_ctags_bin = 'ectags.exe'
-" gotags doesn't work now
-let g:ctrlp_buftag_types = {
-\ 'go'         : '--language-force=go --golang-types=ftv',
-\ }
+let g:ctrlp_buftag_ctags_bin = 'ctags.exe'
 " let g:ctrlp_user_command = 'rg %s --files --color=never'
 
 
@@ -131,64 +121,60 @@ let g:echodoc#type = 'signature'
 
 
 " coc
-" Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=500
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
+let g:coc_config_home = $ROOT
+let g:coc_global_extensions = ['coc-css', 'coc-emmet', 'coc-html', 'coc-json', 'coc-tsserver', 'coc-ultisnips', 'coc-yaml', 'coc-vetur']
+set updatetime=500 " You will have bad experience for diagnostic messages when it's default 4000.
+set shortmess+=c " don't give |ins-completion-menu| messages.
+set signcolumn=yes " always show signcolumns
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-			\ pumvisible() ? "\<C-n>" :
-			\ <SID>check_back_space() ? "\<TAB>" :
+inoremap <silent><expr> <tab>
+			\ pumvisible() ? "\<c-n>" :
+			\ <SID>check_back_space() ? "\<tab>" :
 			\ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<c-h>"
 function! s:check_back_space() abort
 	let col = col('.') - 1
 	return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 " Use <c-space> for trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
-" Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" Remap keys for gotos
+" Use <cr> for confirm completion
+inoremap <expr> <cr> pumvisible() ? "\<c-y>" : "\<c-g>u\<cr>"
+" Mappings
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
-" nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
-" Use K for show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+nmap <leader>r <Plug>(coc-rename)
+nnoremap <silent> gt :<c-u>CocList outline<cr>
+nnoremap <silent> gT :<c-u>CocList -I symbols<cr>
+nnoremap <silent> zd :<c-u>CocList diagnostics<cr>
+nmap <silent> [d <Plug>(coc-diagnostic-prev)
+nmap <silent> ]d <Plug>(coc-diagnostic-next)
+nmap g= :call CocAction('format')<cr>
+xmap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap if <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)
+nnoremap <silent> K :call <SID>show_documentation()<cr>
 function! s:show_documentation()
-	if &filetype == 'vim'
+	if (index(['vim','help'], &filetype) >= 0)
 		execute 'h '.expand('<cword>')
 	else
 		call CocAction('doHover')
 	endif
 endfunction
-" Highlight symbol under cursor on CursorHold
-if exists('CocActionAsync')
-	autocmd CursorHold * silent call CocActionAsync('highlight')
-endif
-" Remap for rename current word
-nmap <leader>r <Plug>(coc-rename)
-" Remap for format selected region
-nmap g= :call CocAction('format')<cr>
 augroup CocGroup
 	autocmd!
 	" Setup formatexpr specified filetype(s).
-	autocmd FileType typescript,json,vue setl formatexpr=CocAction('formatSelected')
+	autocmd FileType javascript,json,vue,html,css,go setl formatexpr=CocAction('formatSelected')
 	" Update signature help on jump placeholder
 	autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
-" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-vmap ga <Plug>(coc-codeaction-selected)
-nmap ga <Plug>(coc-codeaction-selected)
-" Remap for do codeAction of current line
-nmap <leader>ac  <Plug>(coc-codeaction)
 " Fix autofix problem of current line
-nmap <leader>qf  <Plug>(coc-fix-current)
+" nmap <leader>qf  <Plug>(coc-fix-current)
 " Close preview window when completion is done.
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+" autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 
 
@@ -247,10 +233,12 @@ let g:ale_fixers = {
 \}
 let g:ale_linters = {
 	\ 'javascript': [],
-	\ 'css': ['stylelint'],
+	\ 'css': [],
 	\ 'python': ['mypy'],
-	\ 'go': ['golint'],
+	\ 'go': [],
 \}
+" \ 'go': ['golint'],
+" \ 'css': ['stylelint'],
 let g:ale_python_pyls_executable = 'C:/Python36/Scripts/pyls'
 function! SetALEShortcuts()
 	" nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<CR>
