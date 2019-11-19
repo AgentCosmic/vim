@@ -1,19 +1,12 @@
 {
-	"coc.preferences.formatOnSaveFiletypes": [
-		"go"
-	],
 	"languageserver": {
 		"golang": {
 			"command": "gopls",
 			"rootPatterns": [
 				"go.mod",
-				".vim/",
-				".git/",
-				".hg/"
+				".git/"
 			],
-			"filetypes": [
-				"go"
-			]
+			"filetypes": ["go"]
 		}
 	},
 	"vetur.format.options.tabSize": 4,

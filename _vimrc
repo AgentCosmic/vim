@@ -22,7 +22,7 @@ set grepformat=%f:%l:%c:%m,%f:%l:%m
 set history=50 " Keep 50 lines of command line history
 set path+=** " let's you fuzzy :find all files
 set wildmenu " Auto complete on command line
-set wildignore+=*.swp,.git,.svn,*.pyc,*.png,*.jpg,*.gif,*.psd,desktop.ini,Thumbs.db " Ignore these files when searching
+set wildignore+=*.swp,.git,.svn,node_modules,*.pyc,*.png,*.jpg,*.gif,*.psd,desktop.ini,Thumbs.db " Ignore these files when searching
 set hidden " Don't unload buffer when it's hidden
 set lazyredraw " Don't redraw while executing macros (good performance config)
 set encoding=utf8 " Set utf8 as standard encoding and en_US as the standard language
@@ -262,10 +262,11 @@ noremap <F1> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> tr
 " Commands
 " ----- ----- ----- -----
 
-command! CdToFile cd %:p:h
-command! DeleteControlM %s/$//
-command! EVimrc :e $MYVIMRC
-command! SS :syntax sync fromstart
+command CdToFile cd %:p:h
+command DeleteControlM %s/$//
+command EVimrc :e $MYVIMRC
+command SS :syntax sync fromstart
+command -nargs=? Count :%s/<f-args>//gn
 
 " edit a macro using cq(macro name)
 fun! ChangeReg() abort

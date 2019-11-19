@@ -1,3 +1,4 @@
+" https://github.com/BurntSushi/ripgrep/releases
 call plug#begin('$HOME/plugged')
 " Universal Vim Functionality
 Plug 'duff/vim-bufonly'
@@ -22,32 +23,27 @@ Plug 'majutsushi/tagbar', { 'on': ['Tagbar', 'TagbarToggle', 'TagbarOpen'] } " h
 " Plug 'w0rp/ale'
 " Language
 Plug 'mattn/emmet-vim'
-Plug 'ap/vim-css-color'
 Plug 'pangloss/vim-javascript'
 Plug 'alvan/vim-closetag'
 Plug 'captbaritone/better-indent-support-for-php-with-html'
 Plug 'pearofducks/ansible-vim'
 Plug 'posva/vim-vue', { 'for': 'vue' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install', 'on': 'MarkdownPreview' }
 " GUI
 Plug 'fholgado/minibufexpl.vim'
+Plug 'ap/vim-css-color'
 
 " Evaluating
 Plug 'unblevable/quick-scope'
 Plug 'tommcdo/vim-exchange'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
-" Plug 'KabbAmine/zeavim.vim'
-" Plug 'heavenshell/vim-jsdoc.git'
-" Plug 'jbgutierrez/vim-better-comments'
+Plug 'jeetsukumaran/vim-indentwise'
+Plug 'AndrewRadev/splitjoin.vim'
 " Plug 'AndrewRadev/linediff.vim', { 'on': 'Linediff' }
-
 call plug#end()
 
-" Zeavim
-" nmap <leader>z <Plug>Zeavim
-" vmap <leader>z <Plug>ZVVisSelection
 
 " QuickScope
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
@@ -84,6 +80,17 @@ vmap <leader>c <c-_><c-_>
 noremap <c-h> :SidewaysLeft<cr>
 noremap <c-l> :SidewaysRight<cr>
 
+" auto-pairs
+augroup AutoPairs
+	autocmd!
+	autocmd FileType html,vue let b:AutoPairs = AutoPairsDefine({'<!--' : '-->'})
+	autocmd FileType css,vue let b:AutoPairs = AutoPairsDefine({'/**' : '*/', '/*' : '*/'})
+	autocmd FileType php let b:AutoPairs = AutoPairsDefine({'<?php' : '?>'})
+augroup end
+inoremap {, {},<left><left>
+inoremap (, (),<left><left>
+inoremap [, [],<left><left>
+
 " CtrlSF
 let g:ctrlsf_ackprg = 'rg'
 
@@ -108,6 +115,7 @@ let g:ctrlp_user_command = {
 nnoremap gb :CtrlPBuffer<cr>
 nnoremap g/ :CtrlPLine<cr>
 nnoremap gm :CtrlPMRU<cr>
+" nnoremap gt :CtrlPTag<cr>
 let g:ctrlp_buftag_ctags_bin = 'ctags.exe'
 " let g:ctrlp_user_command = 'rg %s --files --color=never'
 
@@ -170,6 +178,9 @@ augroup CocGroup
 	autocmd FileType javascript,json,vue,html,css,go setl formatexpr=CocAction('formatSelected')
 	" Update signature help on jump placeholder
 	autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+	" Auto format and fix import for go
+	autocmd BufWritePre *.go :call CocAction('format') | CocCommand editor.action.organizeImport
+	autocmd BufWritePre *.vue,*.js :call CocAction('format')
 augroup end
 " Fix autofix problem of current line
 " nmap <leader>qf  <Plug>(coc-fix-current)
@@ -251,9 +262,36 @@ endfunction()
 augroup ALE
   autocmd!
   autocmd FileType javascript,html,css,scss,python,go call SetALEShortcuts()
-augroup END
+augroup end
 " npm install -g javascript-typescript-langserver vscode-html-languageserver-bin stylelint 
 " pip install python-language-server rope mypy flake8 isort
+
+
+
+" vim-go
+let g:go_code_completion_enabled =  0
+let g:go_fmt_autosave = 0
+nmap gI <Plug>(go-imports):w<cr>
+nmap gV <Plug>(go-vet)
+" use for CtrlPTag
+augroup VimGo
+	autocmd!
+	autocmd FileType go nnoremap gt :GoDecls<cr>
+	autocmd FileType go nnoremap gT :GoDeclsDir<cr>
+augroup end
+
+
+
+" vue
+let g:vue_disable_pre_processors=1
+
+
+
+" Emmet
+let g:user_emmet_leader_key = '<c-y>'
+let g:user_emmet_expandabbr_key = '<c-e>'
+" let g:user_emmet_expandword_key = '<c-e>'
+" let g:user_emmet_complete_tag = 1
 
 
 
@@ -277,23 +315,3 @@ let g:miniBufExplCycleArround = 1
 " hi link MBEVisibleChanged MBEChanged
 " hi MBEVisibleActiveNormal gui=bold
 " hi MBEVisibleActiveChanged gui=bold,italic
-
-
-
-" Vim Go
-let g:go_code_completion_enabled =  0
-let g:go_fmt_autosave = 0
-nmap gI <Plug>(go-imports):w<cr>
-nmap gV <Plug>(go-vet)
-
-
-
-" vue
-let g:vue_disable_pre_processors=1
-
-
-
-" Emmet
-let g:user_emmet_leader_key = '<c-y>'
-let g:user_emmet_expandabbr_key = '<c-e>'
-" let g:user_emmet_expandword_key = '<c-e>'
