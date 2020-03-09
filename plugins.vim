@@ -308,6 +308,16 @@ vnoremap <c-s-tab> <esc>:MBEbb<cr>
 nnoremap <c-s-tab> :MBEbb<cr>
 let g:miniBufExplUseSingleClick = 1
 let g:miniBufExplCycleArround = 1
+" automatically exit MiniBufExpl when we enter it
+augroup blurMiniBufExpl
+	autocmd!
+	autocmd WinEnter * call timer_start(50, 'EscapeMiniBufExpl')
+augroup END
+function! EscapeMiniBufExpl(timer)
+	if @% == '-MiniBufExplorer-' 
+		execute('wincmd j') 
+	endif 
+endfunction
 " For third party colorschemes
 " hi MBENormal guifg=fg gui=none
 " hi MBEChanged guifg=fg gui=italic
