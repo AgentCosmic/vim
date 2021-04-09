@@ -3,7 +3,8 @@
 set nocompatible
 
 " Change home directory
-let $ROOT = $VIM . '/home'
+let $ROOT = $VIM
+let $HOME = $ROOT . '/home'
 
 source $VIMRUNTIME/mswin.vim
 behave mswin
@@ -38,10 +39,10 @@ set showcmd " display incomplete commands
 set nobackup
 set writebackup
 " Use custom swap file location
-set directory=$ROOT/.cache/swap//,.
+set directory=$HOME/.cache/swap//,.
 " Use persistent undo
 set undofile
-set undodir=$ROOT/.cache/undo//,.
+set undodir=$HOME/.cache/undo//,.
 
 " Line number
 set numberwidth=5
@@ -313,6 +314,6 @@ set guicursor+=a:blinkwait750-blinkon750-blinkoff250
 " Others
 " ----- ----- ----- -----
 
-command! EPlugin :e $VIM/plugins.vim
-source $VIM/plugins.vim
-source $VIM/gvim.vim
+command! EPlugin :e $ROOT/plugins.vim
+source $ROOT/plugins.vim
+source $ROOT/gvim.vim
