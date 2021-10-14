@@ -30,7 +30,7 @@ Plug 'captbaritone/better-indent-support-for-php-with-html'
 Plug 'pearofducks/ansible-vim'
 Plug 'posva/vim-vue', { 'for': 'vue' }
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go', 'tag': 'v1.22' }
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install', 'on': 'MarkdownPreview' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & npm install', 'on': 'MarkdownPreview' }
 " GUI
 Plug 'fholgado/minibufexpl.vim'
 Plug 'ap/vim-css-color'
