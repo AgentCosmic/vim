@@ -28,7 +28,7 @@ set lazyredraw " Don't redraw while executing macros (good performance config)
 set encoding=utf8 " Set utf8 as standard encoding and en_US as the standard language
 set synmaxcol=500 " Don't try to highlight lines longer than this
 set signcolumn=yes " always show signcolumns
-set colorcolumn=80,120 " set ruler to show at column 80 and 120
+set colorcolumn=120 " set ruler to show at column 80 and 120
 set cursorline " highlight current line
 set previewheight=8 " smaller preview window
 set ruler " show the cursor position all the time
@@ -296,9 +296,9 @@ nnoremap cq :call ChangeReg()<cr>
 " TUI/GUI
 " ----- ----- ----- -----
 
-set guifont=JetBrains\ Mono:h9
+set guifont=Consolas:h10:cANSI
 set background=dark
-colorscheme	comfort
+colorscheme	distinct
 syntax on
 set hlsearch
 " In many terminal emulators the mouse works just fine, thus enable it.
