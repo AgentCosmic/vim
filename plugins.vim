@@ -76,7 +76,7 @@ inoremap [, [],<left><left>
 let g:ctrlsf_ackprg = 'rg'
 
 " ctrlp
-let g:ctrlp_map = '<space>'
+let g:ctrlp_map = '\'
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_open_multiple_files = 'i'
 let g:ctrlp_by_filename = 1
