@@ -1,4 +1,3 @@
-" https://github.com/BurntSushi/ripgrep/releases
 call plug#begin('$HOME/plugged')
 " Universal Vim Functionality
 Plug 'duff/vim-bufonly'
@@ -7,6 +6,8 @@ Plug 'itchyny/vim-cursorword'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-abolish'
 Plug 'unblevable/quick-scope'
+Plug 'dyng/ctrlsf.vim'
+Plug 'ervandew/supertab'
 " Programming Related
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat' " so vim-surround can repeat with dot command
@@ -18,7 +19,6 @@ Plug 'wellle/targets.vim'
 Plug 'nathanaelkane/vim-indent-guides', {'on': ['IndentGuidesEnable', 'IndentGuidesToggle']}
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'jeetsukumaran/vim-indentwise'
-Plug 'ervandew/supertab'
 " Language
 Plug 'sheerun/vim-polyglot'
 Plug 'mattn/emmet-vim'
@@ -27,7 +27,6 @@ Plug 'alvan/vim-closetag'
 Plug 'fholgado/minibufexpl.vim'
 Plug 'ap/vim-css-color'
 " External Dependency
-Plug 'dyng/ctrlsf.vim'
 Plug 'ctrlpvim/ctrlp.vim' " https://github.com/BurntSushi/ripgrep/releases
 call plug#end()
 
@@ -71,9 +70,6 @@ augroup end
 inoremap {, {},<left><left>
 inoremap (, (),<left><left>
 inoremap [, [],<left><left>
-
-" CtrlSF
-let g:ctrlsf_ackprg = 'rg'
 
 " ctrlp
 let g:ctrlp_map = '\'

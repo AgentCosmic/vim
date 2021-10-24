@@ -5,17 +5,6 @@ Remember to create these 2 folders in same folder as .vimrc
 - /home/swap
 - /home/undo
 
-Software used:
-
-- ctags
-- php
-- python
-- lua
-- silver searcher
-- nodejs
-	- jshint
-	- csslint
-
 Latest Windows build available at:
 
 - [http://tuxproject.de/projects/vim/](http://tuxproject.de/projects/vim/)
