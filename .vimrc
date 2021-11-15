@@ -3,8 +3,9 @@
 set nocompatible
 
 " set directory to keep all the vim files
-let $STORE = $HOME . '/.vimfiles'
-set runtimepath=$STORE,$VIMRUNTIME
+let $STORE = '~/.vimfiles'
+set runtimepath+=~/vim/vimfiles
+set runtimepath+=$STORE
 
 " ----- ----- ----- -----
 " Behavior
@@ -277,7 +278,6 @@ nnoremap cr :call ChangeReg()<cr>
 " ----- ----- ----- -----
 
 set background=dark
-colorscheme	distinct
 syntax on
 set hlsearch
 " In many terminal emulators the mouse works just fine, thus enable it.
