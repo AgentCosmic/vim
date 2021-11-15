@@ -170,9 +170,6 @@ nnoremap za :call FoldIndent()<cr>
 " Remapping
 " ----- ----- ----- -----
 
-" Change leader key
-let mapleader = ' '
-
 " Re-select after copying
 vnoremap <c-c> "+ygv
 
@@ -366,6 +363,7 @@ let g:ctrlp_custom_ignore = {
 	\ 'dir': '\v[\/](\..+)$',
 	\ 'file': '\v[\/](.+\.min\.(css|js))$'
 \ }
+nnoremap gh :CtrlPMRUFiles<cr>
 nnoremap gb :CtrlPBuffer<cr>
 nnoremap g/ :CtrlPLine<cr>
 
