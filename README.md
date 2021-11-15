@@ -15,7 +15,7 @@ Latest Windows build available at:
 # Linux
 
 ```bash
-git clone git@github.com:AgentCosmic/vim.git
+git clone https://github.com/AgentCosmic/vim.git
 ln -rsf ~/vim/.vimrc .vimrc
 mkdir .vimfiles
 mkdir .vimfiles/undo

@@ -252,6 +252,10 @@ inoremap <F8> <esc><F8>
 inoremap <F9> <esc><F9>
 inoremap <F10> <esc><F10>
 
+" Change buffer
+nnoremap <tab> :bn<cr>
+nnoremap <s-tab> :bp<cr>
+
 
 " ----- ----- ----- -----
 " Commands
