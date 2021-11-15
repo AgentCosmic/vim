@@ -3,7 +3,7 @@
 set nocompatible
 
 " set directory to keep all the vim files
-let $STORE = $HOME . '/vimfiles'
+let $STORE = $HOME . '/.vimfiles'
 set runtimepath=$STORE,$VIMRUNTIME
 
 " ----- ----- ----- -----
@@ -33,10 +33,10 @@ set showcmd " display incomplete commands
 set nobackup
 set writebackup
 " Use custom swap file location
-set directory=$STORE/.cache/swap//,.
+set directory=$STORE/swap//,.
 " Use persistent undo
 set undofile
-set undodir=$STORE/.cache/undo//,.
+set undodir=$STORE/undo//,.
 
 " Line number
 set numberwidth=3
