@@ -296,9 +296,9 @@ nnoremap cr :call ChangeReg()<cr>
 " ----- ----- ----- -----
 
 set guifont=Consolas:h10:cANSI
-set termguicolors
-set background=dark
-colorscheme	distinct
+if (has("termguicolors"))
+	set termguicolors
+endif
 syntax on
 set hlsearch
 " In many terminal emulators the mouse works just fine, thus enable it.
