@@ -24,7 +24,7 @@ set lazyredraw " Don't redraw while executing macros (good performance config)
 set encoding=utf8 " Set utf8 as standard encoding and en_US as the standard language
 set synmaxcol=500 " Don't try to highlight lines longer than this
 set signcolumn=yes " always show signcolumns
-set cursorline " highlight current line
+" set cursorline " highlight current line
 set previewheight=8 " smaller preview window
 set ruler " show the cursor position all the time
 set scrolloff=1 " keep padding around cursor
@@ -278,7 +278,9 @@ nnoremap cr :call ChangeReg()<cr>
 " TUI/GUI
 " ----- ----- ----- -----
 
+set termguicolors
 set background=dark
+colorscheme distinct
 syntax on
 set hlsearch
 " In many terminal emulators the mouse works just fine, thus enable it.

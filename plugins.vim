@@ -91,7 +91,7 @@ let g:ctrlp_user_command = {
 			\ }
 nnoremap gb :CtrlPBuffer<cr>
 nnoremap g/ :CtrlPLine<cr>
-nnoremap gm :CtrlPMRU<cr>
+nnoremap gh :CtrlPMRU<cr>
 " nnoremap gt :CtrlPTag<cr>
 let g:ctrlp_buftag_ctags_bin = 'ctags.exe'
 " let g:ctrlp_user_command = 'rg %s --files --color=never'

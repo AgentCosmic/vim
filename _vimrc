@@ -296,6 +296,7 @@ nnoremap cr :call ChangeReg()<cr>
 " ----- ----- ----- -----
 
 set guifont=Consolas:h10:cANSI
+set termguicolors
 set background=dark
 colorscheme	distinct
 syntax on
