@@ -14,24 +14,65 @@ filetype plugin indent on " Important for a lot of things
 set incsearch " Do incremental searching
 set ignorecase " Ignore case when searching, but search capital if used
 set smartcase " But use it when there is uppercase
-" set grepprg=rg\ --vimgrep\ --no-heading
-" set grepformat=%f:%l:%c:%m,%f:%l:%m
 set history=50 " Keep 50 lines of command line history
+set path+=** " let's you fuzzy :find all files
 set wildmenu " Auto complete on command line
-set wildignore+=*.swp,.git,.svn,*.pyc,*.png,*.jpg,*.gif,*.psd,desktop.ini,Thumbs.db " Ignore these files when searching
+set wildignore+=*.swp,.git,*/node_modules/*,*/venv/*,*/.venv/*,*.pyc,*.png,*.jpg,*.gif,*.psd,*.ai,desktop.ini,Thumbs.db " Ignore these files when searching
 set hidden " Don't unload buffer when it's hidden
 set lazyredraw " Don't redraw while executing macros (good performance config)
 set encoding=utf8 " Set utf8 as standard encoding and en_US as the standard language
 set synmaxcol=500 " Don't try to highlight lines longer than this
+set signcolumn=yes " always show signcolumns
+set cursorline " highlight current line
+set previewheight=8 " smaller preview window
+set ruler " show the cursor position all the time
+set scrolloff=1 " keep padding around cursor
+set showcmd " display incomplete commands
 
 " Disable backup litters
 set nobackup
 set writebackup
 " Use custom swap file location
-set directory=$STORE/swap//,.
+set directory=$STORE/.cache/swap//,.
 " Use persistent undo
 set undofile
-set undodir=$STORE/undo//,.
+set undodir=$STORE/.cache/undo//,.
+
+" Line number
+set numberwidth=3
+set relativenumber
+set number
+
+" Status line
+set laststatus=2 " always show statusline
+set statusline=\ %{StatuslineMode()}\ | " working directory
+set statusline+=\ %f " working directory followed by file path
+set statusline+=\ %r " readonly flag
+set statusline+=\ %m " modified flag
+set statusline+=%= " right align from here
+set statusline+=\ %{&ff},\ %{strlen(&fenc)?&fenc:'none'}\ %y\  " filetype, format, encoding
+set statusline+=\ | " separator
+set statusline+=\ %l:\ %c\ -\ %L\ lines\ " current line, cursor column, line/total percent
+function! StatuslineMode()
+  let l:mode=mode()
+  if l:mode==#"n"
+	return "NORMAL"
+  elseif l:mode==?"v"
+	return "VISUAL"
+  elseif l:mode==#"i"
+	return "INSERT"
+  elseif l:mode==#"R"
+	return "REPLACE"
+  elseif l:mode==?"s"
+	return "SELECT"
+  elseif l:mode==#"t"
+	return "TERMINAL"
+  elseif l:mode==#"c"
+	return "COMMAND"
+  elseif l:mode==#"!"
+	return "SHELL"
+  endif
+endfunction
 
 augroup vimrcBehavior
 	autocmd!
@@ -68,7 +109,7 @@ function! s:DelistWindow()
 	endif
 endf
 
-" vp doesn't replace paste buffer
+" visual paste doesn't replace paste buffer
 function! RestoreRegister()
 	let @" = s:restore_reg
 	return ''
@@ -88,56 +129,7 @@ augroup END
 
 
 " ----- ----- ----- -----
-" GUI
-" ----- ----- ----- -----
-
-set background=dark
-set t_Co=256
-colorscheme default
-
-" In many terminal emulators the mouse works just fine, thus enable it.
-if has('mouse')
-  set mouse=a
-endif
-
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
-endif
-
-" Status line
-set laststatus=2 " always show statusline
-set statusline=\ %{getcwd()}\ \ \|\ \ %f " working directory followed by file path
-set statusline+=\ %r " readonly flag
-set statusline+=\ %m " modified flag
-set statusline+=%= " right align from here
-set statusline+=%c,\ %l\ \|\ %P\ of\ %L\ " cursor column, line/total percent
-set statusline+=\ [%{strlen(&fenc)?&fenc:'none'},\ %{&ff}]\  " encoding, format
-
-" Make the cursor look nicer
-set guicursor+=v:hor50
-set guicursor+=i:ver1
-set guicursor+=a:blinkwait750-blinkon750-blinkoff250
-
-" Line number
-set numberwidth=3
-set relativenumber
-set number
-
-set cursorline " highlight current line
-set guioptions=erR " tabs & right scollbar. No menu, toolbar and bottom scollbar
-set guitablabel=%-0.12t%M " format of tab label
-set previewheight=8 " smaller preview window
-set ruler " show the cursor position all the time
-set scrolloff=1 " keep padding around cursor
-set showcmd " display incomplete commands
-set showtabline=1 " show tabs only if there are more than one
-
-
-" ----- ----- ----- -----
-" Text
+" Text and formatting
 " ----- ----- ----- -----
 
 " Wordwrap
@@ -156,18 +148,38 @@ set autoindent
 set nocindent
 
 " Folding
-set foldmethod=indent
-set foldnestmax=8
+set foldnestmax=12
 set foldlevel=9 " prefer to be open by default
 set nofoldenable " disable by default
+" define indent folds then allow manual folding
+augroup enhanceFold
+	autocmd!
+	autocmd BufReadPre * setlocal foldmethod=indent
+	autocmd BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
+augroup END
+fun! FoldIndent() abort
+	setlocal foldmethod=indent
+	normal! za
+	setlocal foldmethod=manual
+endfun
+nnoremap za :call FoldIndent()<cr>
 
 
 " ----- ----- ----- -----
 " Remapping
 " ----- ----- ----- -----
 
+" Change leader key
+let mapleader = ' '
+
+" Re-select after copying
+vnoremap <c-c> "+ygv
+
 " Delete without jumping http://vim.1045645.n5.nabble.com/How-to-delete-range-of-lines-without-moving-cursor-td5713219.html
-command! -range D <line1>,<line2>d | norm <c-o> 
+command! -range D <line1>,<line2>d | norm <c-o>
+
+" Don't use Ex mode, use Q for formatting
+map Q gq
 
 " Alternate file switching
 nnoremap <bs> <c-^>
@@ -194,7 +206,7 @@ inoremap . <c-g>u.
 inoremap , <c-g>u,
 inoremap = <c-g>u=
 
-" Move line use alt-j and alt-k http://vim.wikia.com/wiki/Moving_lines_up_or_down
+" Move line use ctrl-j and ctrl-k http://vim.wikia.com/wiki/Moving_lines_up_or_down
 nnoremap <c-j> :m .+1<cr>==
 nnoremap <c-k> :m .-2<cr>==
 inoremap <c-j> <esc>:m .+1<cr>==gi
@@ -204,8 +216,6 @@ vnoremap <c-k> :m '<-2<cr>gv=gv
 
 " Select last modified/pasted http://vim.wikia.com/wiki/Selecting_your_pasted_text
 nnoremap <expr> <leader>v '`[' . strpart(getregtype(), 0, 1) . '`]'
-" Paste then select
-" nmap <leader>p p<leader>v
 
 " Navigate between windows
 noremap <a-j> <c-w>j
@@ -221,17 +231,17 @@ nnoremap <c-s-down> 10<C-x>
 
 " Shortcuts
 nnoremap <leader>s :update<cr>
-nnoremap <leader>a :wa<cr>
-nnoremap <leader>h :nohlsearch<cr>
+nnoremap <leader>as :wa<cr>
+nnoremap <leader>nh :nohlsearch<cr>
 nnoremap <leader>q :q<cr>
 vnoremap <leader>p "_dP
-nnoremap <leader>o :update<cr>:source %<cr>
+nnoremap <leader>ou :update<cr>:source %<cr>
 " Substitute
 nnoremap <F2> yiw:%s/\<<c-r>0\>/
 " Grep
-nnoremap <F3> g*Nyiw:cw<cr>:grep <c-r>0 
-" Delete buffer
-nnoremap <F4> :bdelete<cr>
+nnoremap <F3> g*Nyiw:cw<cr>:grep <c-r>0
+" Delete buffer without closing the split
+nnoremap <F4> :bn\|bd #<cr>
 
 " Disable function keys in insert mode
 inoremap <F2> <esc><F2>
@@ -250,7 +260,35 @@ inoremap <F10> <esc><F10>
 " ----- ----- ----- -----
 
 command! CdToFile cd %:p:h
+command! DeleteControlM %s/$//
 command! EVimrc :e $MYVIMRC
+command! SS :syntax sync fromstart
+
+" edit a macro using cq(macro name)
+fun! ChangeReg() abort
+	let x = nr2char(getchar())
+	call feedkeys("q:ilet @" . x . " = \<c-r>\<c-r>=string(@" . x . ")\<cr>\<esc>0f'", 'n')
+endfun
+nnoremap cr :call ChangeReg()<cr>
+
+
+" ----- ----- ----- -----
+" TUI/GUI
+" ----- ----- ----- -----
+
+set background=dark
+colorscheme	distinct
+syntax on
+set hlsearch
+" In many terminal emulators the mouse works just fine, thus enable it.
+if has('mouse')
+	set mouse=a
+endif
+
+" Make the cursor look nicer
+set guicursor+=v:hor50
+set guicursor+=a:blinkwait750-blinkon750-blinkoff250
+
 
 
 " ----- ----- ----- -----
