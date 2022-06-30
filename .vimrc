@@ -306,6 +306,7 @@ Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'itchyny/vim-cursorword'
 Plug 'easymotion/vim-easymotion'
 Plug 'haya14busa/incsearch.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 " Programming Related
 Plug 'tpope/vim-surround'
 Plug 'Raimondi/delimitMate'
@@ -313,7 +314,6 @@ Plug 'tomtom/tcomment_vim'
 Plug 'sickill/vim-pasta'
 Plug 'AndrewRadev/sideways.vim'
 Plug 'nathanaelkane/vim-indent-guides', {'on': ['IndentGuidesEnable', 'IndentGuidesToggle']}
-Plug 'ctrlpvim/ctrlp.vim'
 " Language
 Plug 'mattn/emmet-vim'
 Plug 'ap/vim-css-color'
