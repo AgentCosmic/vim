@@ -1,18 +1,19 @@
-# Windows
+# Vim
 
-Remember to create these 2 folders in same folder as .vimrc
+Personal vim setup.
 
-- /home/swap
-- /home/undo
+## Dependencies
 
-Latest Windows build available at:
+- [vim](https://www.vim.org/) for [Windows](http://tuxproject.de/projects/vim/)
+- *Optional:* [Universal ctags](https://github.com/universal-ctags/ctags-win32/releases)
 
-- [http://tuxproject.de/projects/vim/](http://tuxproject.de/projects/vim/)
-- [http://wyw.dcweb.cn/](http://wyw.dcweb.cn/)
-- [https://bitbucket.org/Haroogan/vim-for-windows/src](https://bitbucket.org/Haroogan/vim-for-windows/src)
+## Windows
 
+- Clone project repository.
+- Install vim into this project folder at `/vim...`.
+- Create these 2 folders at `/home/.cache/swap` and `/home/.cache/undo`.
 
-# Linux
+## Linux
 
 ```bash
 git clone https://github.com/AgentCosmic/vim.git
@@ -22,5 +23,7 @@ mkdir .vimfiles/undo
 mkdir .vimfiles/swap
 vim
 ```
+
+## Getting Started
 
 Install plugins: `:PlugInstall`
