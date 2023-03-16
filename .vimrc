@@ -170,6 +170,9 @@ nnoremap za :call FoldIndent()<cr>
 " Remapping
 " ----- ----- ----- -----
 
+" Change leader key
+let mapleader = ' '
+
 " Re-select after copying
 vnoremap <c-c> "+ygv
 
@@ -313,12 +316,8 @@ Plug 'Raimondi/delimitMate'
 Plug 'tomtom/tcomment_vim'
 Plug 'sickill/vim-pasta'
 Plug 'AndrewRadev/sideways.vim'
-Plug 'nathanaelkane/vim-indent-guides', {'on': ['IndentGuidesEnable', 'IndentGuidesToggle']}
 " Language
-Plug 'mattn/emmet-vim'
-Plug 'ap/vim-css-color'
-Plug 'pangloss/vim-javascript'
-Plug 'captbaritone/better-indent-support-for-php-with-html'
+Plug 'sheerun/vim-polyglot'
 " Vim TUI
 Plug 'ervandew/supertab'
 Plug 'ap/vim-buftabline'
@@ -360,7 +359,7 @@ imap <leader>c <c-o><c-_><c-_>
 vmap <leader>c <c-_><c-_>
 
 " ctrlp
-let g:ctrlp_map = '<space>'
+let g:ctrlp_map = '\'
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_open_multiple_files = 'i'
 let g:ctrlp_by_filename = 1
@@ -373,10 +372,3 @@ nnoremap gh :CtrlPMRUFiles<cr>
 nnoremap gb :CtrlPBuffer<cr>
 nnoremap g/ :CtrlPLine<cr>
 
-
-
-" Emmet
-let g:user_emmet_leader_key = '<c-y>'
-let g:user_emmet_expandabbr_key = '<c-e>'
-" let g:user_emmet_expandword_key = '<c-e>'
-let g:user_emmet_complete_tag = 1
