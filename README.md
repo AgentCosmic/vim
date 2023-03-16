@@ -10,7 +10,7 @@ Personal vim setup.
 
 - Clone project repository.
 - Install vim into this project folder at `/vim82`.
-- Create these 2 folders at `/home/.cache/swap` and `/home/.cache/undo`.
+- Create these 2 folders at `./home/.cache/swap` and `./home/.cache/undo`.
 
 ## Linux
 

@@ -77,8 +77,6 @@ let g:ctrlp_user_command = {
 nnoremap gb :CtrlPBuffer<cr>
 nnoremap g/ :CtrlPLine<cr>
 nnoremap gh :CtrlPMRU<cr>
-" nnoremap gt :CtrlPTag<cr>
-let g:ctrlp_buftag_ctags_bin = 'ctags.exe'
 
 
 
@@ -105,10 +103,3 @@ function! EscapeMiniBufExpl(timer)
 		execute('wincmd j') 
 	endif 
 endfunction
-" For third party colorschemes
-" hi MBENormal guifg=fg gui=none
-" hi MBEChanged guifg=fg gui=italic
-" hi link MBEVisibleNormal MBENormal
-" hi link MBEVisibleChanged MBEChanged
-" hi MBEVisibleActiveNormal gui=bold
-" hi MBEVisibleActiveChanged gui=bold,italic
