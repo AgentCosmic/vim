@@ -5,24 +5,18 @@ Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'itchyny/vim-cursorword'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-abolish'
-Plug 'unblevable/quick-scope'
-Plug 'dyng/ctrlsf.vim'
 Plug 'ervandew/supertab'
 Plug 'ctrlpvim/ctrlp.vim'
 " Programming Related
+Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat' " so vim-surround can repeat with dot command
 Plug 'jiangmiao/auto-pairs'
 Plug 'tomtom/tcomment_vim'
-Plug 'sickill/vim-pasta'
 Plug 'AndrewRadev/sideways.vim'
 Plug 'wellle/targets.vim'
-Plug 'nathanaelkane/vim-indent-guides', {'on': ['IndentGuidesEnable', 'IndentGuidesToggle']}
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'jeetsukumaran/vim-indentwise'
-" Language
-Plug 'sheerun/vim-polyglot'
-Plug 'mattn/emmet-vim'
 Plug 'alvan/vim-closetag'
 " GUI
 Plug 'fholgado/minibufexpl.vim'
@@ -42,13 +36,7 @@ let g:EasyMotion_leader_key = '<Leader>'
 let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz'
 
 " vim-closetag
-let g:closetag_filetypes = 'html,php,vue'
-
-" quick-scope
-let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
-let g:qs_max_chars = 160
-highlight QuickScopePrimary guifg='#f1ede4' gui=underline
-highlight QuickScopeSecondary guifg='#94918a' gui=underline
+let g:closetag_filetypes = 'html,jsx,tsx,,php,vue'
 
 " tcomment
 nmap <leader>c <c-_><c-_>
@@ -91,14 +79,6 @@ nnoremap g/ :CtrlPLine<cr>
 nnoremap gh :CtrlPMRU<cr>
 " nnoremap gt :CtrlPTag<cr>
 let g:ctrlp_buftag_ctags_bin = 'ctags.exe'
-
-
-
-" Emmet
-let g:user_emmet_leader_key = '<c-y>'
-let g:user_emmet_expandabbr_key = '<c-e>'
-" let g:user_emmet_expandword_key = '<c-e>'
-" let g:user_emmet_complete_tag = 1
 
 
 
