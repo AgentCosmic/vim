@@ -15,6 +15,7 @@ Personal vim setup.
 ## Linux
 
 ```bash
+cd ~
 git clone https://github.com/AgentCosmic/vim.git
 ln -rsf ~/vim/.vimrc .vimrc
 mkdir .vimfiles

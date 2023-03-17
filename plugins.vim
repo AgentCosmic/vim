@@ -1,4 +1,4 @@
-call plug#begin('$HOME/plugged')
+call plug#begin('$STORE/plugins')
 " Universal Vim Functionality
 Plug 'duff/vim-bufonly'
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}

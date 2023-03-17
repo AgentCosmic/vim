@@ -2,9 +2,13 @@
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
-" Change home directory
+" Change home directory so plugins don't pollute our real home directory
 let $ROOT = $VIM
 let $HOME = $ROOT . '/home'
+
+" Set directory to keep all the vim files
+let $STORE = $ROOT . '/vimfiles'
+set runtimepath+=$STORE
 
 source $VIMRUNTIME/mswin.vim
 behave mswin
@@ -38,13 +42,13 @@ set showcmd " display incomplete commands
 set nobackup
 set writebackup
 " Use custom swap file location
-set directory=$HOME/.cache/swap//,.
+set directory=$STORE/swap//,.
 " Use persistent undo
 set undofile
-set undodir=$HOME/.cache/undo//,.
+set undodir=$STORE/undo//,.
 
 " Line number
-set numberwidth=4
+set numberwidth=3
 set relativenumber
 set number
 

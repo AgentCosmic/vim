@@ -1,4 +1,5 @@
 /home
 /vim82
+/vimfiles/plugins
 /vimfiles/autoload/plug.vim.old
 /vimfiles/.netrwhist
