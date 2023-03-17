@@ -25,12 +25,6 @@ call plug#end()
 
 " -----------------------------------------------------------------------------
 
-" BufOnly
-nnoremap <c-F4> :BufOnly<cr>
-
-" undotree
-cabbrev UT UndotreeToggle
-
 " EasyMotion
 let g:EasyMotion_leader_key = '<Leader>'
 let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz'
@@ -41,7 +35,6 @@ let g:closetag_filetypes = 'html,jsx,tsx,,php,vue'
 " tcomment
 nmap <leader>c <c-_><c-_>
 vmap <leader>c <c-_><c-_>
-" imap <leader>c <c-o><c-_><c-_>
 
 " sideways
 noremap <c-h> :SidewaysLeft<cr>
