@@ -5,7 +5,6 @@ set nocompatible
 " Change home directory so plugins don't pollute our real home directory
 let $ROOT = $VIM
 let $HOME = $ROOT . '/home'
-
 " Set directory to keep all the vim files
 let $STORE = $ROOT . '/vimfiles'
 set runtimepath+=$STORE
@@ -37,6 +36,7 @@ set previewheight=8 " smaller preview window
 set ruler " show the cursor position all the time
 set scrolloff=1 " keep padding around cursor
 set showcmd " display incomplete commands
+set hlsearch " highlight search pattern
 
 " Disable backup litters
 set nobackup
@@ -298,27 +298,16 @@ nnoremap cr :call ChangeReg()<cr>
 " TUI/GUI
 " ----- ----- ----- -----
 
-set guifont=Consolas:h10:cANSI
 if (has("termguicolors"))
 	set termguicolors
 endif
 syntax on
-set hlsearch
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
 	set mouse=a
 endif
 
-" Make the cursor look nicer
-set guicursor+=v:hor50
-set guicursor+=a:blinkwait750-blinkon750-blinkoff250
-
-
-" ----- ----- ----- -----
-" Others
-" ----- ----- ----- -----
-
-command! EPlugin :e $ROOT/plugins.vim
+" Load gvim config 
 source $ROOT/gvim.vim
 
 

@@ -6,6 +6,10 @@ else
 	colorscheme desert
 endif
 
+" Make the cursor look nicer
+set guicursor+=v:hor50
+set guicursor+=a:blinkwait750-blinkon750-blinkoff250
+
 augroup vimrcGui
 	autocmd!
 	" Give alt key control to Windows
