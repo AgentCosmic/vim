@@ -3,8 +3,7 @@
 set nocompatible
 
 " set directory to keep all the vim files
-let $STORE = $HOME . '/.vimfiles'
-set runtimepath+=~/vim/vimfiles
+let $STORE = $HOME .. '/vim/vimfiles'
 set runtimepath+=$STORE
 
 " ----- ----- ----- -----
@@ -286,6 +285,7 @@ nnoremap cr :call ChangeReg()<cr>
 if (has("termguicolors"))
 	set termguicolors
 endif
+colorscheme distinct
 syntax on
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
@@ -297,7 +297,7 @@ endif
 " Plugins
 " ----- ----- ----- -----
 
-call plug#begin('$STORE/plugged')
+call plug#begin('$STORE/plugins')
 " Universal Vim Functionality
 Plug 'duff/vim-bufonly'
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
