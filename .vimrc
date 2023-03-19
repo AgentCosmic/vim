@@ -29,6 +29,7 @@ set previewheight=8 " smaller preview window
 set ruler " show the cursor position all the time
 set scrolloff=1 " keep padding around cursor
 set showcmd " display incomplete commands
+set hlsearch
 
 " Disable backup litters
 set nobackup
@@ -286,16 +287,10 @@ if (has("termguicolors"))
 	set termguicolors
 endif
 syntax on
-set hlsearch
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
 	set mouse=a
 endif
-
-" Make the cursor look nicer
-set guicursor+=v:hor50
-set guicursor+=a:blinkwait750-blinkon750-blinkoff250
-
 
 
 " ----- ----- ----- -----
@@ -329,12 +324,6 @@ call plug#end()
 
 " -----------------------------------------------------------------------------
 
-" BufOnly
-nnoremap <c-F4> :BufOnly<cr>
-
-" undotree
-cabbrev UT UndotreeToggle
-
 " EasyMotion
 let g:EasyMotion_leader_key = '<Leader>'
 let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz'
@@ -345,7 +334,6 @@ let g:closetag_filetypes = 'html,jsx,tsx,,php,vue'
 " tcomment
 nmap <leader>c <c-_><c-_>
 vmap <leader>c <c-_><c-_>
-" imap <leader>c <c-o><c-_><c-_>
 
 " sideways
 noremap <c-h> :SidewaysLeft<cr>
