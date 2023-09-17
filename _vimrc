@@ -266,15 +266,6 @@ inoremap <F8> <esc><F8>
 inoremap <F9> <esc><F9>
 inoremap <F10> <esc><F10>
 
-" Highlight when double click
-nnoremap <silent> <2-leftmouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<cr>:set hls<cr>viwg<c-h>
-" remove double click mapping in help file so we can navigate the link
-augroup doubleClick
-    autocmd!
-    autocmd FileType help :silent! unmap <2-leftmouse>
-	autocmd FileType qf :silent! unmap <2-leftmouse>
-augroup END
-
 
 " ----- ----- ----- -----
 " Commands
@@ -285,13 +276,6 @@ command! DeleteControlM %s/$//
 command! EVimrc :e $MYVIMRC
 command! SS :syntax sync fromstart
 command! -nargs=? Count :%s/<f-args>//gn
-
-" edit a macro using cq(macro name)
-fun! ChangeReg() abort
-	let x = nr2char(getchar())
-	call feedkeys("q:ilet @" . x . " = \<c-r>\<c-r>=string(@" . x . ")\<cr>\<esc>0f'", 'n')
-endfun
-nnoremap cr :call ChangeReg()<cr>
 
 
 " ----- ----- ----- -----
@@ -306,6 +290,7 @@ syntax on
 if has('mouse')
 	set mouse=a
 endif
+colorscheme distinct
 
 " Load gvim config 
 source $ROOT/gvim.vim
@@ -321,20 +306,15 @@ Plug 'duff/vim-bufonly'
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'itchyny/vim-cursorword'
 Plug 'easymotion/vim-easymotion'
-Plug 'tpope/vim-abolish'
-Plug 'ervandew/supertab'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ervandew/supertab'
 " Programming Related
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat' " so vim-surround can repeat with dot command
 Plug 'jiangmiao/auto-pairs'
 Plug 'tomtom/tcomment_vim'
-Plug 'AndrewRadev/sideways.vim'
 Plug 'wellle/targets.vim'
-Plug 'michaeljsmith/vim-indent-object'
-Plug 'jeetsukumaran/vim-indentwise'
-Plug 'alvan/vim-closetag'
 " GUI
 Plug 'fholgado/minibufexpl.vim'
 Plug 'ap/vim-css-color'
@@ -346,16 +326,9 @@ call plug#end()
 let g:EasyMotion_leader_key = '<Leader>'
 let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz'
 
-" vim-closetag
-let g:closetag_filetypes = 'html,jsx,tsx,,php,vue'
-
 " tcomment
 nmap <leader>c <c-_><c-_>
 vmap <leader>c <c-_><c-_>
-
-" sideways
-noremap <c-h> :SidewaysLeft<cr>
-noremap <c-l> :SidewaysRight<cr>
 
 " auto-pairs
 augroup AutoPairs
@@ -369,7 +342,7 @@ inoremap (, (),<left><left>
 inoremap [, [],<left><left>
 
 " ctrlp
-let g:ctrlp_map = '\'
+let g:ctrlp_map = '<leader>f'
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_open_multiple_files = 'i'
 let g:ctrlp_by_filename = 1
@@ -384,11 +357,6 @@ let g:ctrlp_user_command = {
 				\ 1: ['.git', 'cd %s && git ls-files -- . ":!:*.jpg" . ":!:*.png" . ":!:*.psd" . ":!:*.ai"'],
 			\ },
 			\ }
-nnoremap gb :CtrlPBuffer<cr>
-nnoremap g/ :CtrlPLine<cr>
-nnoremap gh :CtrlPMRU<cr>
-
-
 
 " MiniBufExpl
 nnoremap <tab> :MBEbn<cr>

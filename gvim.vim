@@ -1,9 +1,6 @@
 if has('gui_running')
 	set guifont=Consolas:h10:cANSI
 	colorscheme distinct
-else
-	set t_Co=256
-	colorscheme desert
 endif
 
 " Make the cursor look nicer

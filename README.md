@@ -10,7 +10,7 @@ Lightweight, dependency free vim setup for Windows and Linux.
 
 - Clone project repository.
 - Install vim into this project folder at `/vim82`.
-- Install plugins: `vim -S vim/plugin-snapshot.vim`
+- Install plugins: `vim -S plugin-snapshot.vim`
 
 ## Linux
 
