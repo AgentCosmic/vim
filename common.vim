@@ -284,7 +284,6 @@ colorscheme distinct
 
 call plug#begin('$STORE/plugins')
 " Universal Vim Functionality
-Plug 'duff/vim-bufonly'
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'itchyny/vim-cursorword'
 Plug 'easymotion/vim-easymotion'
