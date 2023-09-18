@@ -15,6 +15,7 @@ function! s:h(group, style, ...)
 		\ 'guibg='   (has_key(a:style, 'bg')    ? a:style.bg   : 'NONE')
 		\ 'guisp='   (has_key(a:style, 'sp')    ? a:style.sp   : 'NONE')
 		\ 'gui='     (has_key(a:style, 'gui')   ? a:style.gui  : 'NONE')
+		\ 'cterm='   (has_key(a:style, 'cterm') ? a:style.cterm: 'NONE')
 endfunction
 
 let s:orange = '#e0c287'
