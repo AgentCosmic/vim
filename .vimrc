@@ -133,6 +133,9 @@ augroup END
 " Text and formatting
 " ----- ----- ----- -----
 
+" Default to unix line ending
+set fileformats=unix,dos
+
 " Wordwrap
 set linebreak
 
@@ -154,14 +157,14 @@ set foldlevel=9 " prefer to be open by default
 set nofoldenable " disable by default
 " define indent folds then allow manual folding
 augroup enhanceFold
-	autocmd!
-	autocmd BufReadPre * setlocal foldmethod=indent
-	autocmd BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
+    autocmd!
+    autocmd BufReadPre * setlocal foldmethod=indent
+    autocmd BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
 augroup END
 fun! FoldIndent() abort
-	setlocal foldmethod=indent
+    setlocal foldmethod=indent
 	normal! za
-	setlocal foldmethod=manual
+    setlocal foldmethod=manual
 endfun
 nnoremap za :call FoldIndent()<cr>
 

@@ -12,6 +12,9 @@ set runtimepath+=$STORE
 source $VIMRUNTIME/mswin.vim
 behave mswin
 
+" Load gvim config 
+source $ROOT/gvim.vim
+
 " ----- ----- ----- -----
 " Behavior
 " ----- ----- ----- -----
@@ -291,9 +294,6 @@ if has('mouse')
 	set mouse=a
 endif
 colorscheme distinct
-
-" Load gvim config 
-source $ROOT/gvim.vim
 
 
 " ----- ----- ----- -----
