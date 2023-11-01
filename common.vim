@@ -91,17 +91,9 @@ augroup vimrcBehavior
 	" Remove trailing whitespace before saving
 	autocmd BufWritePre *.css,*.htm,*.html,*.js,*.php,*.py,*.ts,*.tsx,*.jsx,*.yaml,*.yml,*.vue :%s/\(\s\+\|\)$//e
 
-	" Don't list preview window
-	autocmd BufEnter * :call <SID>DelistWindow()
 	" Don't list quickfix window
 	autocmd FileType qf set nobuflisted
 augroup END
-
-function! s:DelistWindow()
-	if &previewwindow
-		set nobuflisted
-	endif
-endf
 
 " visual paste doesn't replace paste buffer
 function! RestoreRegister()
@@ -113,13 +105,6 @@ function! s:Repl()
 	return "p@=RestoreRegister()\<cr>"
 endfunction
 vmap <silent> <expr> p <sid>Repl()
-
-" keep cursor position when changing buffer
-augroup keepCursorPosition
-	autocmd!
-	autocmd BufLeave * let b:winview = winsaveview()
-	autocmd BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
-augroup END
 
 
 " ----- ----- ----- -----
