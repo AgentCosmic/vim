@@ -9,7 +9,7 @@ set smartcase " But use it when there is uppercase
 set history=50 " Keep 50 lines of command line history
 set path+=** " let's you fuzzy :find all files
 set wildmenu " Auto complete on command line
-set wildignore+=*.swp,.git,*/node_modules/*,*/venv/*,*/.venv/*,*.pyc,*.png,*.jpg,*.gif,*.psd,*.ai,desktop.ini,Thumbs.db " Ignore these files when searching
+set wildignore+=*.swp,.git,*/node_modules/*,*/.venv/*,*/venv/*,*.pyc,*.png,*.jpg,*.jpeg,*.gif,desktop.ini,Thumbs.db " Ignore these files when searching
 set hidden " Don't unload buffer when it's hidden
 set lazyredraw " Don't redraw while executing macros (good performance config)
 set encoding=utf8 " Set utf8 as standard encoding and en_US as the standard language
@@ -189,27 +189,27 @@ inoremap , <c-g>u,
 inoremap = <c-g>u=
 
 " Move line use ctrl-j and ctrl-k http://vim.wikia.com/wiki/Moving_lines_up_or_down
-nnoremap <c-j> :m .+1<cr>==
-nnoremap <c-k> :m .-2<cr>==
-inoremap <c-j> <esc>:m .+1<cr>==gi
-inoremap <c-k> <esc>:m .-2<cr>==gi
-vnoremap <c-j> :m '>+1<cr>gv=gv
-vnoremap <c-k> :m '<-2<cr>gv=gv
+noremap <a-j> :m .+1<cr>==
+nnoremap <a-k> :m .-2<cr>==
+inoremap <a-j> <esc>:m .+1<cr>==gi
+inoremap <a-k> <esc>:m .-2<cr>==gi
+vnoremap <a-j> :m '>+1<cr>gv=gv
+vnoremap <a-k> :m '<-2<cr>gv=gv
 
 " Select last modified/pasted http://vim.wikia.com/wiki/Selecting_your_pasted_text
 nnoremap <expr> <leader>v '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " Navigate between windows
-noremap <a-j> <c-w>j
-noremap <a-k> <c-w>k
-noremap <a-h> <c-w>h
-noremap <a-l> <c-w>l
+noremap <c-j> <c-w>j
+noremap <c-k> <c-w>k
+noremap <c-h> <c-w>h
+noremap <c-l> <c-w>l
 
 " Increment, decrement number
-nnoremap <c-up> <C-a>
-nnoremap <c-down> <C-x>
-nnoremap <c-s-up> 10<C-a>
-nnoremap <c-s-down> 10<C-x>
+nnoremap <a-up> <C-a>
+nnoremap <a-down> <C-x>
+nnoremap <a-s-up> 10<C-a>
+nnoremap <a-s-down> 10<C-x>
 
 " Shortcuts
 nnoremap <leader>s :update<cr>
@@ -270,20 +270,18 @@ colorscheme distinct
 call plug#begin('$STORE/plugins')
 " Universal Vim Functionality
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
-Plug 'itchyny/vim-cursorword'
 Plug 'easymotion/vim-easymotion'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'ervandew/supertab'
 " Programming Related
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat' " so vim-surround can repeat with dot command
 Plug 'jiangmiao/auto-pairs'
 Plug 'tomtom/tcomment_vim'
 Plug 'wellle/targets.vim'
 " GUI
 Plug 'fholgado/minibufexpl.vim'
-Plug 'ap/vim-css-color'
+Plug 'itchyny/vim-cursorword'
 call plug#end()
 
 " -----------------------------------------------------------------------------
@@ -314,15 +312,15 @@ let g:ctrlp_open_multiple_files = 'i'
 let g:ctrlp_by_filename = 1
 let g:ctrlp_match_current_file = 0
 let g:ctrlp_custom_ignore = {
-			\ 'dir': '\v[\/](\..+|node_modules|__pycache__)$',
-			\ 'file': '\v[\/](.+\.min\.(css|js))$'
-			\ }
+	\ 'dir': '\v[\/](\..+|node_modules|__pycache__)$',
+	\ 'file': '\v[\/](.+\.min\.(css|js))$'
+	\ }
 let g:user_command_async = 1
 let g:ctrlp_user_command = {
-			\ 'types': {
-				\ 1: ['.git', 'cd %s && git ls-files -- . ":!:*.jpg" . ":!:*.png" . ":!:*.psd" . ":!:*.ai"'],
-			\ },
-			\ }
+	\ 'types': {
+		\ 1: ['.git', 'cd %s && git ls-files -- . ":!:*.jpg" . ":!:*.png" . ":!:*.psd" . ":!:*.ai"'],
+	\ },
+	\ }
 
 " MiniBufExpl
 nnoremap <tab> :MBEbn<cr>

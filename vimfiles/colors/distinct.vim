@@ -143,11 +143,6 @@ hi link cssPseudoClassId Type
 
 hi link jsxAttrib Statement
 
-" quick-scope
-
-call s:h('QuickScopePrimary', {'fg': s:grey95, 'gui': 'underline'})
-call s:h('QuickScopeSecondary', {'fg': s:grey65, 'gui': 'underline'})
-
 " MBE
 
 hi MBENormal guifg=fg
