@@ -1,6 +1,12 @@
 " Vim color file
 " Author: Dalton Tan <daltonyi@hotmail.com>
 
+" auto reload colorscheme when saving this file
+augroup DistinctColorscheme
+	autocmd!
+	autocmd BufWritePost distinct.vim colorscheme distinct
+augroup end
+
 set background=dark
 hi clear
 if exists('syntax_on')
@@ -24,15 +30,15 @@ let s:blue = '#98cfeb'
 let s:purple = '#cabfff'
 let s:red = '#ffb0b0'
 let s:highlight = '#213a6e'
-let s:grey95 = '#f1ede4' " white
-let s:grey85 = '#d6d3cb' " fg
-let s:grey75 = '#bdb8b1' " inactive tab
-let s:grey65 = '#a29d97' " comment
-let s:grey25 = '#3c3b38' " Visual
-let s:grey20 = '#31302d' " CursorLine
-let s:grey15 = '#262522' " bg
-let s:grey10 = '#1c1b19' " column
-let s:grey05 = '#12110d' " black
+let s:grey95 = '#f1f1f1' " white
+let s:grey85 = '#d4d4d4' " fg
+let s:grey75 = '#b9b9b9' " inactive tab
+let s:grey65 = '#9e9e9e' " comment
+let s:grey25 = '#3b3b3b' " Visual
+let s:grey20 = '#303030' " CursorLine
+let s:grey15 = '#262626' " bg
+let s:grey10 = '#1b1b1b' " column
+let s:grey05 = '#121212' " black
 
 " Syntax Groups (descriptions and ordering from `:h w18`)
 
@@ -76,9 +82,9 @@ call s:h('Debug', {'fg': s:purple})
 call s:h('Underlined', {'fg': s:grey65, 'gui': 'underline'})
 call s:h('Ignore', {'fg': s:grey65, 'bg': 'bg'})
 call s:h('Error', {'fg': s:red, 'bg': 'NONE', 'sp': s:red})
-call s:h('Todo', {'fg': s:grey95, 'bg': 'bg', 'gui': 'bold'})
+call s:h('Todo', {'fg': s:grey95, 'gui': 'bold,italic'})
 
-" Highlighting Groups (descriptions and ordering from `:h highlight-groups`) {{{
+" Highlighting Groups (descriptions and ordering from `:h highlight-groups`)
 
 call s:h('ColorColumn', {'bg': s:grey10})
 call s:h('Conceal', {'bg': 'bg', 'fg': s:grey25})
@@ -92,7 +98,7 @@ call s:h('DiffDelete', {'fg': s:red, 'bg': 'NONE'})
 call s:h('DiffText', {'bg': s:grey25, 'gui': 'italic,bold'})
 call s:h('EndOfBuffer', {'fg': s:grey65, 'bg': 'NONE'})
 call s:h('ErrorMsg', {'fg': s:red, 'bg': 'NONE', 'sp': s:red})
-call s:h('VertSplit', {'fg': s:grey65, 'bg': s:grey15})
+call s:h('VertSplit', {'fg': s:grey25, 'bg': s:grey15})
 call s:h('Folded', {'fg': s:grey65, 'bg': s:grey05})
 call s:h('FoldColumn', {'fg': s:grey65, 'bg': s:grey05})
 call s:h('SignColumn', {'fg': s:purple, 'bg': 'bg'})

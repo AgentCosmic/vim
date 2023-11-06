@@ -139,7 +139,7 @@ augroup enhanceFold
     autocmd BufReadPre * setlocal foldmethod=indent
     autocmd BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
 augroup END
-fun! FoldIndent() abort
+function! FoldIndent() abort
     setlocal foldmethod=indent
 	normal! za
     setlocal foldmethod=manual
