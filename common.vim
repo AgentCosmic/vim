@@ -218,6 +218,7 @@ nnoremap <leader>nh :nohlsearch<cr>
 nnoremap <leader>q :q<cr>
 vnoremap <leader>p "_dP
 nnoremap <leader>ou :update<cr>:source %<cr>
+nnoremap <leader>nt :20Lexplore<cr>
 " Substitute
 nnoremap <F2> yiw:%s/\<<c-r>0\>/
 " Grep
