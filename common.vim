@@ -273,7 +273,7 @@ call plug#begin('$STORE/plugins')
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'easymotion/vim-easymotion'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'ervandew/supertab'
+Plug 'lifepillar/vim-mucomplete'
 " Programming Related
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
@@ -290,6 +290,11 @@ call plug#end()
 " EasyMotion
 let g:EasyMotion_leader_key = '<Leader>'
 let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz'
+
+" mucomplete
+set completeopt+=menuone,noselect
+set shortmess+=c " shut off completion messages
+let g:mucomplete#enable_auto_at_startup = 1
 
 " tcomment
 nmap <leader>c <c-_><c-_>
@@ -322,6 +327,7 @@ let g:ctrlp_user_command = {
 		\ 1: ['.git', 'cd %s && git ls-files -- . ":!:*.jpg" . ":!:*.png" . ":!:*.psd" . ":!:*.ai"'],
 	\ },
 	\ }
+nnoremap <leader>of :CtrlPMRUFiles<cr>
 
 " MiniBufExpl
 nnoremap <tab> :MBEbn<cr>
