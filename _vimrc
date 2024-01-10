@@ -19,7 +19,7 @@ source $ROOT/common.vim
 " ----- ----- ----- -----
 
 if has('gui_running')
-	set guifont=Hack\ Nerd\ Font\ Mono:h9:cANSI
+	set guifont=Consolas:h9:cANSI
 endif
 
 " Make the cursor look nicer
