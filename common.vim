@@ -307,15 +307,11 @@ augroup AutoPairs
 	autocmd FileType css,vue let b:AutoPairs = AutoPairsDefine({'/**' : '*/', '/*' : '*/'})
 	autocmd FileType php let b:AutoPairs = AutoPairsDefine({'<?php' : '?>'})
 augroup end
-inoremap {, {},<left><left>
-inoremap (, (),<left><left>
-inoremap [, [],<left><left>
 
 " ctrlp
 let g:ctrlp_map = '<leader>f'
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_open_multiple_files = 'i'
-let g:ctrlp_by_filename = 1
 let g:ctrlp_match_current_file = 0
 let g:ctrlp_custom_ignore = {
 	\ 'dir': '\v[\/](\..+|node_modules|__pycache__)$',
@@ -324,7 +320,7 @@ let g:ctrlp_custom_ignore = {
 let g:user_command_async = 1
 let g:ctrlp_user_command = {
 	\ 'types': {
-		\ 1: ['.git', 'cd %s && git ls-files -- . ":!:*.jpg" . ":!:*.png" . ":!:*.psd" . ":!:*.ai"'],
+		\ 1: ['.git', 'cd %s && git ls-files -- . ":!:*.jpeg" . ":!:*.jpg" . ":!:*.png" . ":!:*.gif"'],
 	\ },
 	\ }
 nnoremap <leader>of :CtrlPMRUFiles<cr>
