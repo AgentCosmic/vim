@@ -277,8 +277,7 @@ colorscheme distinct
 
 call plug#begin('$STORE/plugins')
 " Universal Vim Functionality
-Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
-Plug 'easymotion/vim-easymotion'
+Plug 'monkoose/vim9-stargate'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'lifepillar/vim-mucomplete'
 " Programming Related
@@ -290,18 +289,10 @@ Plug 'wellle/targets.vim'
 " GUI
 Plug 'ap/vim-buftabline'
 Plug 'itchyny/vim-cursorword'
+Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 call plug#end()
 
 " -----------------------------------------------------------------------------
-
-" EasyMotion
-let g:EasyMotion_leader_key = '<Leader>'
-let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz'
-
-" mucomplete
-set completeopt+=menuone,noselect
-set shortmess+=c " shut off completion messages
-let g:mucomplete#enable_auto_at_startup = 1
 
 " tcomment
 nmap <leader>c <c-_><c-_>
@@ -331,3 +322,12 @@ let g:ctrlp_user_command = {
 	\ },
 	\ }
 nnoremap <leader>of :CtrlPMRUFiles<cr>
+
+" mucomplete
+set completeopt+=menuone,noselect
+set shortmess+=c " shut off completion messages
+let g:mucomplete#enable_auto_at_startup = 1
+
+" stargate
+let g:stargate_chars = 'abcdefghijklmnopqrstuvwxyz'
+noremap <leader>h <Cmd>call stargate#OKvim(1)<CR>
