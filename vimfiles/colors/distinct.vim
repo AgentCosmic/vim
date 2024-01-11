@@ -146,14 +146,11 @@ call s:h('WildMenu', {'fg': s:grey15, 'bg': s:green})
 hi link cssProp Statement
 hi link cssAtRule Type
 hi link cssPseudoClassId Type
-
 hi link jsxAttrib Statement
 
-" MBE
+" buftabline
 
-hi MBENormal guifg=fg
-hi MBEChanged guifg=#f1ede4 gui=italic
-hi link MBEVisibleNormal MBENormal
-hi link MBEVisibleChanged MBEChanged
-hi MBEVisibleActiveNormal guifg=#f1ede4 guibg=#484744 gui=bold
-hi MBEVisibleActiveChanged guifg=#f1ede4 guibg=#484744 gui=bold,italic
+hi link BufTabLineActive TabLineSel
+call s:h('BufTabLineModifiedCurrent', {'fg': s:orange})
+call s:h('BufTabLineHidden', {'fg': s:grey65, 'bg': s:grey05})
+call s:h('BufTabLineModifiedHidden', {'fg': s:orange})

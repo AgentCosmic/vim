@@ -237,6 +237,13 @@ inoremap <F8> <esc><F8>
 inoremap <F9> <esc><F9>
 inoremap <F10> <esc><F10>
 
+" change buffer
+nnoremap <tab> :bnext<cr>
+nnoremap <s-tab> :bprev<cr>
+vnoremap <tab> :bnext<cr>
+vnoremap <s-tab> :bprev<cr>
+
+
 
 " ----- ----- ----- -----
 " Commands
@@ -281,7 +288,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'tomtom/tcomment_vim'
 Plug 'wellle/targets.vim'
 " GUI
-Plug 'fholgado/minibufexpl.vim'
+Plug 'ap/vim-buftabline'
 Plug 'itchyny/vim-cursorword'
 call plug#end()
 
@@ -324,27 +331,3 @@ let g:ctrlp_user_command = {
 	\ },
 	\ }
 nnoremap <leader>of :CtrlPMRUFiles<cr>
-
-" MiniBufExpl
-nnoremap <tab> :MBEbn<cr>
-nnoremap <s-tab> :MBEbp<cr>
-vnoremap <tab> :MBEbn<cr>
-vnoremap <s-tab> :MBEbp<cr>
-inoremap <c-tab> <esc>:MBEbf<cr>
-vnoremap <c-tab> <esc>:MBEbf<cr>
-nnoremap <c-tab> :MBEbf<cr>
-inoremap <c-s-tab> <esc>:MBEbb<cr>
-vnoremap <c-s-tab> <esc>:MBEbb<cr>
-nnoremap <c-s-tab> :MBEbb<cr>
-let g:miniBufExplUseSingleClick = 1
-let g:miniBufExplCycleArround = 1
-" automatically exit MiniBufExpl when we enter it
-augroup blurMiniBufExpl
-	autocmd!
-	autocmd WinEnter * call timer_start(50, 'EscapeMiniBufExpl')
-augroup END
-function! EscapeMiniBufExpl(timer)
-	if @% == '-MiniBufExplorer-' 
-		execute('wincmd j') 
-	endif 
-endfunction
