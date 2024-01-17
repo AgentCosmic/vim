@@ -295,6 +295,7 @@ let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz'
 set completeopt+=menuone,noselect
 set shortmess+=c " shut off completion messages
 let g:mucomplete#enable_auto_at_startup = 1
+let g:mucomplete#chains = { 'sql' : ['keyn'] }
 
 " tcomment
 nmap <leader>c <c-_><c-_>
