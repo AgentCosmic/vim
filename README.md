@@ -5,7 +5,7 @@ Lightweight, dependency free vim setup for Windows and Linux.
 ## Dependencies
 
 - [Vim](https://www.vim.org/)
-	- [Windows download](https://ftp.nluug.nl/pub/vim/pc/gvim90.exe)
+	- [Windows download](https://github.com/vim/vim-win32-installer/releases/download/v9.0.2189/gvim_9.0.2189_x64.exe)
 
 ## Windows
 

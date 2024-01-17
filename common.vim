@@ -15,7 +15,7 @@ set lazyredraw " Don't redraw while executing macros (good performance config)
 set encoding=utf8 " Set utf8 as standard encoding and en_US as the standard language
 set synmaxcol=500 " Don't try to highlight lines longer than this
 set signcolumn=yes " always show signcolumns
-set colorcolumn=120 " set ruler to show at 120
+" set colorcolumn=120 " set ruler to show at 120
 set cursorline " highlight current line
 set previewheight=8 " smaller preview window
 set ruler " show the cursor position all the time
@@ -222,7 +222,7 @@ nnoremap <leader>nt :20Lexplore<cr>
 " Substitute
 nnoremap <F2> yiw:%s/\<<c-r>0\>/
 " Grep
-nnoremap <F3> g*Nyiw:cw<cr>:grep <c-r>0
+nnoremap <F3> g*Nyiw:cw<cr>:vimgrep <c-r>0
 " Delete buffer without closing the split
 nnoremap <F4> :bn\|bd #<cr>
 
@@ -236,6 +236,13 @@ inoremap <F7> <esc><F7>
 inoremap <F8> <esc><F8>
 inoremap <F9> <esc><F9>
 inoremap <F10> <esc><F10>
+
+" Change buffer
+nnoremap <tab> :bnext<cr>
+nnoremap <s-tab> :bprev<cr>
+vnoremap <tab> :bnext<cr>
+vnoremap <s-tab> :bprev<cr>
+
 
 
 " ----- ----- ----- -----
@@ -270,10 +277,9 @@ colorscheme distinct
 
 call plug#begin('$STORE/plugins')
 " Universal Vim Functionality
-Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
-Plug 'easymotion/vim-easymotion'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'lifepillar/vim-mucomplete'
+Plug 'monkoose/vim9-stargate'
 " Programming Related
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
@@ -281,21 +287,11 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'tomtom/tcomment_vim'
 Plug 'wellle/targets.vim'
 " GUI
-Plug 'fholgado/minibufexpl.vim'
-Plug 'itchyny/vim-cursorword'
+Plug 'ap/vim-buftabline'
+Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 call plug#end()
 
 " -----------------------------------------------------------------------------
-
-" EasyMotion
-let g:EasyMotion_leader_key = '<Leader>'
-let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz'
-
-" mucomplete
-set completeopt+=menuone,noselect
-set shortmess+=c " shut off completion messages
-let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#chains = { 'sql' : ['keyn'] }
 
 " tcomment
 nmap <leader>c <c-_><c-_>
@@ -308,15 +304,11 @@ augroup AutoPairs
 	autocmd FileType css,vue let b:AutoPairs = AutoPairsDefine({'/**' : '*/', '/*' : '*/'})
 	autocmd FileType php let b:AutoPairs = AutoPairsDefine({'<?php' : '?>'})
 augroup end
-inoremap {, {},<left><left>
-inoremap (, (),<left><left>
-inoremap [, [],<left><left>
 
 " ctrlp
 let g:ctrlp_map = '<leader>f'
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_open_multiple_files = 'i'
-let g:ctrlp_by_filename = 1
 let g:ctrlp_match_current_file = 0
 let g:ctrlp_custom_ignore = {
 	\ 'dir': '\v[\/](\..+|node_modules|__pycache__)$',
@@ -325,31 +317,16 @@ let g:ctrlp_custom_ignore = {
 let g:user_command_async = 1
 let g:ctrlp_user_command = {
 	\ 'types': {
-		\ 1: ['.git', 'cd %s && git ls-files -- . ":!:*.jpg" . ":!:*.png" . ":!:*.psd" . ":!:*.ai"'],
+		\ 1: ['.git', 'cd %s && git ls-files -- . ":!:*.jpeg" . ":!:*.jpg" . ":!:*.png" . ":!:*.gif"'],
 	\ },
 	\ }
 nnoremap <leader>of :CtrlPMRUFiles<cr>
 
-" MiniBufExpl
-nnoremap <tab> :MBEbn<cr>
-nnoremap <s-tab> :MBEbp<cr>
-vnoremap <tab> :MBEbn<cr>
-vnoremap <s-tab> :MBEbp<cr>
-inoremap <c-tab> <esc>:MBEbf<cr>
-vnoremap <c-tab> <esc>:MBEbf<cr>
-nnoremap <c-tab> :MBEbf<cr>
-inoremap <c-s-tab> <esc>:MBEbb<cr>
-vnoremap <c-s-tab> <esc>:MBEbb<cr>
-nnoremap <c-s-tab> :MBEbb<cr>
-let g:miniBufExplUseSingleClick = 1
-let g:miniBufExplCycleArround = 1
-" automatically exit MiniBufExpl when we enter it
-augroup blurMiniBufExpl
-	autocmd!
-	autocmd WinEnter * call timer_start(50, 'EscapeMiniBufExpl')
-augroup END
-function! EscapeMiniBufExpl(timer)
-	if @% == '-MiniBufExplorer-' 
-		execute('wincmd j') 
-	endif 
-endfunction
+" mucomplete
+set completeopt+=menuone,noselect
+set shortmess+=c " shut off completion messages
+let g:mucomplete#enable_auto_at_startup = 1
+
+" stargate
+let g:stargate_chars = 'abcdefghijklmnopqrstuvwxyz'
+noremap <leader>h <Cmd>call stargate#OKvim(1)<CR>
