@@ -315,11 +315,6 @@ let g:ctrlp_custom_ignore = {
 	\ 'file': '\v[\/](.+\.min\.(css|js))$'
 	\ }
 let g:user_command_async = 1
-let g:ctrlp_user_command = {
-	\ 'types': {
-		\ 1: ['.git', 'cd %s && git ls-files -- . ":!:*.jpeg" . ":!:*.jpg" . ":!:*.png" . ":!:*.gif"'],
-	\ },
-	\ }
 nnoremap <leader>of :CtrlPMRUFiles<cr>
 
 " mucomplete
