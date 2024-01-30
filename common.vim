@@ -288,6 +288,7 @@ Plug 'tomtom/tcomment_vim'
 Plug 'wellle/targets.vim'
 " GUI
 Plug 'ap/vim-buftabline'
+Plug 'itchyny/vim-cursorword'
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 call plug#end()
 
