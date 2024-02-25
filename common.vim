@@ -219,12 +219,12 @@ nnoremap <leader>q :q<cr>
 vnoremap <leader>p "_dP
 nnoremap <leader>ou :update<cr>:source %<cr>
 nnoremap <leader>nt :20Lexplore<cr>
+" Delete buffer without closing the split
+nnoremap <leader>d :bn\|bd #<cr>
 " Substitute
 nnoremap <F2> yiw:%s/\<<c-r>0\>/
 " Grep
 nnoremap <F3> g*Nyiw:cw<cr>:vimgrep <c-r>0
-" Delete buffer without closing the split
-nnoremap <F4> :bn\|bd #<cr>
 
 " Disable function keys in insert mode
 inoremap <F2> <esc><F2>
