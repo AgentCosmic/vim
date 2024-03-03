@@ -151,5 +151,5 @@ hi link jsxAttrib Statement
 
 hi link BufTabLineActive TabLineSel
 call s:h('BufTabLineModifiedCurrent', {'fg': s:orange})
-call s:h('BufTabLineHidden', {'fg': s:grey65, 'bg': s:grey05})
+call s:h('BufTabLineHidden', {'fg': s:fg3, 'bg': s:bg1})
 call s:h('BufTabLineModifiedHidden', {'fg': s:orange})
