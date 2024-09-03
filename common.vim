@@ -251,7 +251,7 @@ vnoremap <s-tab> :bprev<cr>
 
 command! CdToFile cd %:p:h
 command! DeleteControlM %s/$//
-command! EVimrc :e $MYVIMRC
+command! EVimrc :e $ROOT/common.vim
 command! SS :syntax sync fromstart
 command! -nargs=? Count :%s/<f-args>//gn
 command! CopyPath :let @+ = expand("%")
@@ -322,10 +322,14 @@ let g:user_command_async = 1
 nnoremap <leader>of :CtrlPMRUFiles<cr>
 
 " mucomplete
+set complete=.,b " change source
 set completeopt+=menuone,noselect
 set shortmess+=c " shut off completion messages
 let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#chains = { 'sql' : ['keyn'] }
+let g:mucomplete#chains = {
+	\ 'default' : ['path', 'c-n', 'omni', 'uspl'],
+	\ 'sql' : ['c-n', 'uspl']
+	\ }
 
 " stargate
 let g:stargate_chars = 'abcdefghijklmnopqrstuvwxyz'

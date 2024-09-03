@@ -17,6 +17,7 @@ Lightweight, dependency free vim setup for Windows and Linux.
 ## Linux
 
 ```bash
+sudo apt install git vim -y
 cd ~
 git clone https://github.com/AgentCosmic/vim.git
 ln -rsf ~/vim/.vimrc .vimrc
