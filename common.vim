@@ -136,10 +136,10 @@ set smartindent
 set autoindent
 set nocindent
 " Auto tab guides for 4 and 2 spaces
-set list listchars=tab:▏\ ,leadmultispace:▏\ \ \ ,
+set list listchars=tab:·\ ,leadmultispace:·\ \ \ ,
 function! s:UpdateLead()
 	if (&tabstop == 2)
-        setlocal listchars=leadmultispace:▏\ ,
+        setlocal listchars=leadmultispace:·\ ,
     endif
 endfun
 augroup indentGuide
