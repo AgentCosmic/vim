@@ -92,10 +92,14 @@ augroup vimrcBehavior
 	autocmd BufWritePre *.css,*.htm,*.html,*.js,*.php,*.py,*.ts,*.tsx,*.jsx,*.yaml,*.yml,*.vue :%s/\(\s\+\|\)$//e
 
 	" Don't list quickfix window
-	autocmd FileType qf set nobuflisted
+	autocmd FileType qf set nobuflisted | wincmd J | setlocal winfixbuf | nnoremap <buffer> q :q<cr>
+
+	" Automatically open quickfix and loclist window when it changes
+    autocmd QuickFixCmdPost [^l]* cwindow
+    autocmd QuickFixCmdPost l* lwindow	
 augroup END
 
-" visual paste doesn't replace paste buffer
+" so visual paste doesn't replace paste buffer
 function! RestoreRegister()
 	let @" = s:restore_reg
 	return ''
@@ -116,10 +120,13 @@ set fileformats=unix,dos
 
 " Wordwrap
 set linebreak
+set breakindent " indent line after breaking
+let &showbreak = 'Ĺ '
+set breakindentopt=sbr,list:2
 
 " Formatting
 set textwidth=119
-set formatoptions=croq " only comments
+set formatoptions=crqnj " auto formatting for comments and list
 
 " Indentation
 set tabstop=4
@@ -128,6 +135,18 @@ set softtabstop=4
 set smartindent
 set autoindent
 set nocindent
+" Auto tab guides for 4 and 2 spaces
+set list listchars=tab:▏\ ,leadmultispace:▏\ \ \ ,
+function! s:UpdateLead()
+	if (&tabstop == 2)
+        setlocal listchars=leadmultispace:▏\ ,
+    endif
+endfun
+augroup indentGuide
+    autocmd!
+    autocmd OptionSet tabstop call s:UpdateLead()
+    autocmd BufEnter * call s:UpdateLead()
+augroup END
 
 " Folding
 set foldnestmax=12
@@ -225,6 +244,9 @@ nnoremap <leader>d :bn\|bd #<cr>
 nnoremap <F2> yiw:%s/\<<c-r>0\>/
 " Grep
 nnoremap <F3> g*Nyiw:cw<cr>:vimgrep <c-r>0
+
+" don't jump when search
+nnoremap <silent> * :let @/= '\<' . expand('<cword>') . '\>' <bar> set hls <cr>
 
 " Disable function keys in insert mode
 inoremap <F2> <esc><F2>

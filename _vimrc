@@ -37,4 +37,4 @@ set guioptions=erR " tabs & right scollbar. No menu, toolbar and bottom scollbar
 set guitablabel=%-0.12t%M " format of tab label
 
 " Reset <c-f> mapping to original (scroll down) that was overridden in mswin.vim
-unmap <c-f>
+silent! unmap <c-f>
