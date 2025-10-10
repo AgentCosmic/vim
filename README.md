@@ -19,7 +19,7 @@ Lightweight, dependency free vim setup for Windows and Linux.
 ```bash
 sudo apt install git vim -y
 cd ~
-git clone https://github.com/AgentCosmic/vim.git
+git clone --filter=tree:0 https://github.com/AgentCosmic/vim.git
 ln -rsf ~/vim/.vimrc .vimrc
 vim -S vim/plugin-snapshot.vim
 ```

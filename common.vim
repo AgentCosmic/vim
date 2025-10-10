@@ -174,8 +174,8 @@ map Q gq
 nnoremap <bs> <c-^>
 
 " Use 0 to move to first non-whitespace since I already have home button
-nnoremap 0 ^
-vnoremap 0 ^
+" nnoremap 0 ^
+" vnoremap 0 ^
 
 " make k and l move one extra character
 onoremap l 2l
@@ -252,6 +252,9 @@ nnoremap <tab> :bnext<cr>
 nnoremap <s-tab> :bprev<cr>
 vnoremap <tab> :bnext<cr>
 vnoremap <s-tab> :bprev<cr>
+
+" bring back <c-i> because it was used by <tab>
+nnoremap <c-s-i> <c-i>
 
 
 
