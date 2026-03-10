@@ -3,7 +3,8 @@
 set nocompatible
 
 " set directory to keep all the vim files
-let $STORE = $HOME . '/vim/vimfiles'
+let $ROOT = fnamemodify(resolve($MYVIMRC), ':h')
+let $STORE = $ROOT . '/vimfiles'
 set runtimepath+=$STORE
 
-source $HOME/vim/common.vim
+source $ROOT/common.vim

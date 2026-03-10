@@ -21,5 +21,5 @@ sudo apt install git vim -y
 cd ~
 git clone --filter=tree:0 https://github.com/AgentCosmic/vim.git
 ln -rsf ~/vim/.vimrc .vimrc
-vim -S vim/plugin-snapshot.vim
+vim -Es -u .vimrc -i NONE -c "source plugin-snapshot.vim" -c "PlugInstall --sync" -c "qa"
 ```
