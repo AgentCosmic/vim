@@ -112,6 +112,8 @@ vmap <silent> <expr> p <sid>Repl()
 
 " enable cfilter plugin for filtering quickfix list
 packadd cfilter
+" enable comment plugin, available on vim9.1
+packadd comment
 
 " Disable some native plugins to improve performance
 let g:loaded_gzip = 1 " for editing compressed files
@@ -230,6 +232,8 @@ nnoremap <F3> g*Nyiw:cw<cr>:vimgrep <c-r>0
 noremap <silent> <c-s> :update<cr>
 vnoremap <silent> <c-s> <c-c>:update<cr>
 inoremap <silent> <c-s> <c-o>:update<cr>
+" Comment
+nmap <leader>c gcc
 
 " don't jump when search
 nnoremap <silent> * :let @/= '\<' . expand('<cword>') . '\>' <bar> set hls <cr>
@@ -298,7 +302,6 @@ Plug 'monkoose/vim9-stargate'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
-Plug 'tomtom/tcomment_vim'
 Plug 'wellle/targets.vim'
 " GUI
 Plug 'ap/vim-buftabline'
@@ -307,10 +310,6 @@ Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 call plug#end()
 
 " -----------------------------------------------------------------------------
-
-" tcomment
-nmap <leader>c <c-_><c-_>
-vmap <leader>c <c-_><c-_>
 
 " auto-pairs
 augroup AutoPairs
