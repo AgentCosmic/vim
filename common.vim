@@ -89,9 +89,9 @@ augroup vimrcBehavior
 	autocmd FileType python setlocal omnifunc=python3complete#Complete
 
 	" Remove trailing whitespace before saving
-	autocmd BufWritePre *.css,*.htm,*.html,*.js,*.php,*.py,*.ts,*.tsx,*.jsx,*.yaml,*.yml,*.vue :%s/\(\s\+\|\)$//e
+	autocmd BufWritePre *.css,*.htm,*.html,*.js,*.json,*.py,*.ts,*.tsx,*.jsx,*.yaml,*.yml,*.toml,*.xml,*.java,*.php,*.vue,*.go :%s/\(\s\+\|\)$//e
 
-	" Don't list quickfix window
+	" Don't list quickfix window, always move quickfix window to bottom, fix the buffer to the window, q to close
 	autocmd FileType qf set nobuflisted | wincmd J | setlocal winfixbuf | nnoremap <buffer> q :q<cr>
 
 	" Automatically open quickfix and loclist window when it changes
@@ -109,6 +109,17 @@ function! s:Repl()
 	return "p@=RestoreRegister()\<cr>"
 endfunction
 vmap <silent> <expr> p <sid>Repl()
+
+" enable cfilter plugin for filtering quickfix list
+packadd cfilter
+
+" Disable some native plugins to improve performance
+let g:loaded_gzip = 1 " for editing compressed files
+let g:loaded_netrwPlugin = 1 " for editing remote files
+let g:loaded_tarPlugin = 1 " for browsing tar files
+let g:loaded_2html_plugin = 1 " for generating HTML files with syntax highlight
+let g:loaded_tutor_mode_plugin = 1 " vim tutor
+let g:loaded_zipPlugin = 1 " for browsing zip files
 
 
 " ----- ----- ----- -----
@@ -137,21 +148,10 @@ set autoindent
 set nocindent
 
 " Folding
+set foldmethod=indent
 set foldnestmax=12
 set foldlevel=9 " prefer to be open by default
 set nofoldenable " disable by default
-" define indent folds then allow manual folding
-augroup enhanceFold
-    autocmd!
-    autocmd BufReadPre * setlocal foldmethod=indent
-    autocmd BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
-augroup END
-function! FoldIndent() abort
-    setlocal foldmethod=indent
-	normal! za
-    setlocal foldmethod=manual
-endfun
-nnoremap za :call FoldIndent()<cr>
 
 
 " ----- ----- ----- -----
@@ -164,18 +164,11 @@ let mapleader = ' '
 " Re-select after copying
 vnoremap <c-c> "+ygv
 
-" Delete without jumping http://vim.1045645.n5.nabble.com/How-to-delete-range-of-lines-without-moving-cursor-td5713219.html
-command! -range D <line1>,<line2>d | norm <c-o>
-
 " Don't use Ex mode, use Q for formatting
 map Q gq
 
 " Alternate file switching
 nnoremap <bs> <c-^>
-
-" Use 0 to move to first non-whitespace since I already have home button
-" nnoremap 0 ^
-" vnoremap 0 ^
 
 " make k and l move one extra character
 onoremap l 2l
@@ -215,6 +208,8 @@ noremap <c-l> <c-w>l
 " Increment, decrement number
 nnoremap <a-up> <C-a>
 nnoremap <a-down> <C-x>
+vnoremap <a-up> <C-a>gv
+vnoremap <a-down> <C-x>gv
 nnoremap <a-s-up> 10<C-a>
 nnoremap <a-s-down> 10<C-x>
 
@@ -232,6 +227,10 @@ nnoremap <leader>d :bn\|bd #<cr>
 nnoremap <F2> yiw:%s/\<<c-r>0\>/
 " Grep
 nnoremap <F3> g*Nyiw:cw<cr>:vimgrep <c-r>0
+" Save with crtl-s
+noremap <silent> <c-s> :update<cr>
+vnoremap <silent> <c-s> <c-c>:update<cr>
+inoremap <silent> <c-s> <c-o>:update<cr>
 
 " don't jump when search
 nnoremap <silent> * :let @/= '\<' . expand('<cword>') . '\>' <bar> set hls <cr>
@@ -247,15 +246,14 @@ inoremap <F8> <esc><F8>
 inoremap <F9> <esc><F9>
 inoremap <F10> <esc><F10>
 
+" bring back <c-i> because it was used by <tab>
+noremap <c-s-i> <c-i>
+
 " Change buffer
 nnoremap <tab> :bnext<cr>
 nnoremap <s-tab> :bprev<cr>
 vnoremap <tab> :bnext<cr>
 vnoremap <s-tab> :bprev<cr>
-
-" bring back <c-i> because it was used by <tab>
-nnoremap <c-s-i> <c-i>
-
 
 
 " ----- ----- ----- -----
