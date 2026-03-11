@@ -330,6 +330,7 @@ let g:ctrlp_custom_ignore = {
 	\ 'file': '\v[\/](.+\.min\.(css|js))$'
 	\ }
 let g:user_command_async = 1
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard'] " use git if available
 nnoremap <leader>of :CtrlPMRUFiles<cr>
 
 " mucomplete
