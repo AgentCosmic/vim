@@ -22,6 +22,7 @@ set ruler " show the cursor position all the time
 set scrolloff=1 " keep padding around cursor
 set showcmd " display incomplete commands
 set hlsearch " highlight search pattern
+set smoothscroll " smooth scroll for wrapped lines
 
 " Disable backup litters
 set nobackup
@@ -109,18 +110,6 @@ function! s:Repl()
 	return "p@=RestoreRegister()\<cr>"
 endfunction
 vmap <silent> <expr> p <sid>Repl()
-
-" enable cfilter plugin for filtering quickfix list
-packadd cfilter
-" enable comment plugin, available on vim9.1
-packadd comment
-
-" Disable some native plugins to improve performance
-let g:loaded_gzip = 1 " for editing compressed files
-let g:loaded_tarPlugin = 1 " for browsing tar files
-let g:loaded_2html_plugin = 1 " for generating HTML files with syntax highlight
-let g:loaded_tutor_mode_plugin = 1 " vim tutor
-let g:loaded_zipPlugin = 1 " for browsing zip files
 
 
 " ----- ----- ----- -----
@@ -219,9 +208,8 @@ nnoremap <leader>s :update<cr>
 nnoremap <leader>as :wa<cr>
 nnoremap <leader>nh :nohlsearch<cr>
 nnoremap <leader>q :q<cr>
-vnoremap <leader>p "_dP
 nnoremap <leader>ou :update<cr>:source %<cr>
-nnoremap <leader>nt :20Lexplore<cr>
+noremap <leader>y "+y
 " Delete buffer without closing the split
 nnoremap <leader>d :bn\|bd #<cr>
 " Substitute
@@ -234,6 +222,8 @@ vnoremap <silent> <c-s> <c-c>:update<cr>
 inoremap <silent> <c-s> <c-o>:update<cr>
 " Comment
 nmap <leader>c gcc
+" Open file explorer as sidebar
+nnoremap <leader>nt :20Lexplore<cr>
 
 " don't jump when search
 nnoremap <silent> * :let @/= '\<' . expand('<cword>') . '\>' <bar> set hls <cr>
@@ -290,7 +280,34 @@ colorscheme distinct
 
 
 " ----- ----- ----- -----
-" Plugins
+" Built-in Plugins
+" ----- ----- ----- -----
+
+packadd! cfilter
+if v:version >= 901
+	packadd! comment
+	packadd! editorconfig
+	packadd! hlyank
+	let g:hlyank_hlgroup = 'Visual'
+endif
+if v:version >= 902
+	packadd! osc52
+endif
+
+" Disable some native plugins to improve performance
+let g:loaded_2html_plugin = 1
+let g:loaded_getscriptPlugin = 1
+let g:loaded_gzip = 1
+let g:loaded_logiPat = 1
+let g:loaded_rrhelper = 1
+let g:loaded_tarPlugin = 1
+let g:loaded_tutor_mode_plugin = 1
+let g:loaded_vimballPlugin = 1
+let g:loaded_zipPlugin = 1
+
+
+" ----- ----- ----- -----
+" External Plugins
 " ----- ----- ----- -----
 
 call plug#begin('$STORE/plugins')

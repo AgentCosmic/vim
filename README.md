@@ -2,15 +2,10 @@
 
 Lightweight, dependency free vim setup for Windows and Linux.
 
-## Dependencies
-
-- [Vim](https://www.vim.org/)
-	- [Windows download](https://github.com/vim/vim-win32-installer/releases/download/v9.0.2189/gvim_9.0.2189_x64.exe)
-
 ## Windows
 
 - Clone project repository.
-- Install vim into this project folder at `./vim90`.
+- Install vim into this project folder at `./vim90`. [Windows download](https://github.com/vim/vim-win32-installer/releases/download/v9.1.2148/gvim_9.1.2148_x64.exe).
 - Link the `_vimrc` file: `New-Item -ItemType HardLink -Path D:\software\vim\vim90\_vimrc -Target .\_vimrc`
 - Install plugins: `vim -S plugin-snapshot.vim`
 
