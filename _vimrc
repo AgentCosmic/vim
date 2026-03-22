@@ -32,7 +32,6 @@ augroup vimrcGui
 	autocmd GUIEnter * simalt ~x
 augroup END
 
-set showtabline=1 " show tabs only if there are more than one
 set guioptions=erR " tabs & right scollbar. No menu, toolbar and bottom scollbar
 set guitablabel=%-0.12t%M " format of tab label
 

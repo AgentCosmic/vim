@@ -272,6 +272,10 @@ if (has("termguicolors"))
 	set termguicolors
 endif
 syntax on
+" Cursor style
+let &t_SI = "\e[5 q" " insert
+let &t_EI = "\e[1 q" " normal
+let &t_SR = "\e[4 q" " replace
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
 	set mouse=a

@@ -8,3 +8,18 @@ let $STORE = $ROOT . '/vimfiles'
 set runtimepath+=$STORE
 
 source $ROOT/common.vim
+
+" ----- ----- ----- -----
+" GUI
+" ----- ----- ----- -----
+
+if has('gui_running')
+	set guifont=DejaVu\ Sans\ Mono\ 9
+	" maximize window on startup
+	set lines=999
+	set columns=999
+endif
+
+" Make the cursor look nicer
+set guicursor+=v:hor50
+set guicursor+=a:blinkwait750-blinkon750-blinkoff250
