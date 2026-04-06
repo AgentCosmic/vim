@@ -323,7 +323,6 @@ Plug 'monkoose/vim9-stargate'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
-Plug 'wellle/targets.vim'
 " GUI
 Plug 'ap/vim-buftabline'
 Plug 'itchyny/vim-cursorword'

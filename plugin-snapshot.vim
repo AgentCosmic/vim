@@ -5,7 +5,6 @@
 
 silent! let g:plugs['auto-pairs'].commit = '39f06b873a8449af8ff6a3eee716d3da14d63a76'
 silent! let g:plugs['ctrlp.vim'].commit = '86872f021c4e245e3c583054fda82fb820a2faee'
-silent! let g:plugs['targets.vim'].commit = '6325416da8f89992b005db3e4517aaef0242602e'
 silent! let g:plugs['undotree'].commit = '6fa6b57cda8459e1e4b2ca34df702f55242f4e4d'
 silent! let g:plugs['vim-buftabline'].commit = '6cdb6ae69a0dbccbed5683adfe79be810df6d661'
 silent! let g:plugs['vim-cursorword'].commit = '371fdd7fa8817c28aa09d181cfcfa3c7ca29bf56'
