@@ -317,7 +317,7 @@ let g:loaded_zipPlugin = 1
 call plug#begin('$STORE/plugins')
 " Universal Vim Functionality
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'lifepillar/vim-mucomplete'
+Plug 'lifepillar/vim-mucomplete' " TODO remove when using vim 9.2
 Plug 'monkoose/vim9-stargate'
 " Programming Related
 Plug 'sheerun/vim-polyglot'
@@ -325,8 +325,8 @@ Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
 " GUI
 Plug 'ap/vim-buftabline'
-Plug 'itchyny/vim-cursorword'
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
+Plug 'https://github.com/christoomey/vim-tmux-navigator'
 call plug#end()
 
 " -----------------------------------------------------------------------------
@@ -365,3 +365,10 @@ let g:mucomplete#chains = {
 " stargate
 let g:stargate_chars = 'abcdefghijklmnopqrstuvwxyz'
 noremap <leader>h <Cmd>call stargate#OKvim(1)<CR>
+
+" tmux
+let g:tmux_navigator_no_mappings = 1
+nnoremap <c-h> :<c-u>TmuxNavigateLeft<cr> <silent>
+nnoremap <c-l> :<c-u>TmuxNavigateRight<cr> <silent>
+nnoremap <c-j> :<c-u>TmuxNavigateDown<cr> <silent>
+nnoremap <c-k> :<c-u>TmuxNavigateUp<cr> <silent>
